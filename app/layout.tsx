@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { customfont } from "./font";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "700"]
-});
+const dm_sans = DM_Sans({ subsets: ["latin"], weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900", "1000"] })
 
 export const metadata: Metadata = {
   title: "Qusoorpk",
@@ -21,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${customfont.className}`}
+        className={`${dm_sans.className}`}
       >
         {children}
       </body>

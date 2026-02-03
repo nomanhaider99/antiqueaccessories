@@ -1,0 +1,1 @@
+ALTER TABLE "products" ALTER COLUMN "delivery_time" SET DATA TYPE text;
