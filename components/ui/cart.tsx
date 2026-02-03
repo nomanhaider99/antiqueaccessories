@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingBag, Minus, Plus, Trash } from "lucide-react";
-import { useEffect, useState } from "react";
 
 import {
   Sheet,
@@ -15,23 +14,11 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
-import {
-  getCart,
-  updateQuantity,
-  removeFromCart,
-  CartItem,
-} from "@/lib/cart";
+import { updateQuantity, removeFromCart } from "@/lib/cart";
+import { useCart } from "@/lib/cart-context";
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-
-  useEffect(() => {
-    setCartItems(getCart());
-  }, []);
-
-  const refreshCart = () => {
-    setCartItems(getCart());
-  };
+  const { cart: cartItems, refresh } = useCart();
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -43,6 +30,7 @@ export default function Cart() {
       <SheetTrigger asChild>
         <button className="relative">
           <ShoppingBag className="h-5 w-5" />
+
           {cartItems.length > 0 && (
             <span className="absolute -top-2 -right-2 text-[10px] bg-black text-white rounded-full w-4 h-4 flex items-center justify-center">
               {cartItems.reduce((s, i) => s + i.quantity, 0)}
@@ -56,7 +44,7 @@ export default function Cart() {
           <SheetTitle>Shopping Cart</SheetTitle>
         </SheetHeader>
 
-        {/* CART ITEMS */}
+        {/* ITEMS */}
         <div className="flex-1 overflow-y-auto mt-6 space-y-6 p-3">
           {cartItems.length === 0 && (
             <p className="text-sm text-center text-muted-foreground mt-10">
@@ -87,15 +75,11 @@ export default function Cart() {
                   {/* Quantity */}
                   <div className="flex items-center border rounded-md">
                     <button
-                      onClick={() => {
-                        updateQuantity(
-                          item.id,
-                          item.size,
-                          item.quantity - 1
-                        );
-                        refreshCart();
-                      }}
                       className="p-1"
+                      onClick={() => {
+                        updateQuantity(item.id, item.size, item.quantity - 1);
+                        refresh();
+                      }}
                     >
                       <Minus className="h-3 w-3" />
                     </button>
@@ -105,15 +89,11 @@ export default function Cart() {
                     </span>
 
                     <button
-                      onClick={() => {
-                        updateQuantity(
-                          item.id,
-                          item.size,
-                          item.quantity + 1
-                        );
-                        refreshCart();
-                      }}
                       className="p-1"
+                      onClick={() => {
+                        updateQuantity(item.id, item.size, item.quantity + 1);
+                        refresh();
+                      }}
                     >
                       <Plus className="h-3 w-3" />
                     </button>
@@ -130,7 +110,7 @@ export default function Cart() {
               <button
                 onClick={() => {
                   removeFromCart(item.id, item.size);
-                  refreshCart();
+                  refresh();
                 }}
                 className="text-muted-foreground hover:text-black"
               >
