@@ -1,9 +1,9 @@
-import { 
-  pgTable, 
-  text, 
-  real, 
-  jsonb, 
-  uuid, 
+import {
+  pgTable,
+  text,
+  real,
+  jsonb,
+  uuid,
   integer,
   timestamp,
   varchar,
@@ -53,92 +53,100 @@ export const orders = pgTable("orders", {
     .notNull(),
 });
 
-  export const productTypeEnum = pgEnum("product_type", [
-    "stitched",
-    "unstitched",
-    "both"
-  ]);
+export const productTypeEnum = pgEnum("product_type", [
+  "stitched",
+  "unstitched",
+  "both"
+]);
 
-  export const productAvailabilityEnum = pgEnum("product_availability", [
-    "available",
-    "sold-out",
-  ]);
+export const productAvailabilityEnum = pgEnum("product_availability", [
+  "available",
+  "sold-out",
+]);
 
-  /* Products */
-  export const products = pgTable("products", {
-    id: uuid("id")
-      .defaultRandom()
-      .primaryKey(),
+/* Products */
+export const products = pgTable("products", {
+  id: uuid("id")
+    .defaultRandom()
+    .primaryKey(),
 
-    article: varchar("article", { length: 120 })
-      .notNull(),
+  article: varchar("article", { length: 120 })
+    .notNull(),
 
-    category: varchar("category", { length: 120 })
-      .notNull(),
+  category: varchar("category", { length: 120 })
+    .notNull(),
 
-    collection: varchar("collection", { length: 120 })
-      .notNull(),
+  collection: varchar("collection", { length: 120 })
+    .notNull(),
 
-    /* MATCHES order_items.price & orders totals */
-    price: real("price")
-      .notNull(),
+  /* MATCHES order_items.price & orders totals */
+  price: real("price")
+    .notNull(),
 
-    type: productTypeEnum("type")
-      .notNull(),
+  type: productTypeEnum("type")
+    .notNull(),
 
-    size: text("size")
-      .notNull(),
+  size: text("size")
+    .notNull(),
 
-    availability: productAvailabilityEnum("availability")
-      .default("available")
-      .notNull(),
+  availability: productAvailabilityEnum("availability")
+    .default("available")
+    .notNull(),
 
-    description: text("description")
-      .notNull(),
+  description: text("description")
+    .notNull(),
 
-    discount: integer("discount")
-      .default(0)
-      .notNull(),
+  discount: integer("discount")
+    .default(0)
+    .notNull(),
 
-    discountedPrice: real("discounted_price")
-      .notNull(),
+  discountedPrice: real("discounted_price")
+    .notNull(),
 
-    deliveryTime: jsonb("delivery_time")
-      .$type<string[]>()
-      .default([]),
+  deliveryTime: jsonb("delivery_time")
+    .$type<string[]>()
+    .default([]),
 
-    images: jsonb("images")
-      .$type<string[]>()
-      .notNull(),
+  images: jsonb("images")
+    .$type<string[]>()
+    .notNull(),
 
-    disclaimer: text("disclaimer")
-      .notNull(),
+  disclaimer: text("disclaimer")
+    .notNull(),
 
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .defaultNow()
-      .notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 
-    updatedAt: timestamp("updated_at", { withTimezone: true })
-      .defaultNow()
-      .notNull(),
-  });
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
 
 export const orderItems = pgTable("order_items", {
   id: uuid("id")
     .defaultRandom()
     .primaryKey(),
+
   order_id: uuid("order_id")
     .notNull()
     .references(() => orders.id, { onDelete: "cascade" }),
+
   product_id: uuid("product_id")
     .notNull()
-    .references(() => products.id, { onDelete: "cascade" }), 
+    .references(() => products.id, { onDelete: "cascade" }),
+
+  size: text("size")      
+    .notNull(),
+
   quantity: integer("quantity")
     .notNull()
     .default(1),
+
   price: real("price")
-    .notNull(), 
+    .notNull(),
 });
+
 
 export const admins = pgTable("admins", {
   id: uuid("id")
@@ -147,7 +155,7 @@ export const admins = pgTable("admins", {
   username: varchar("username", { length: 100 })
     .notNull()
     .unique(),
-  password_hash: text("password_hash") 
+  password_hash: text("password_hash")
     .notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()

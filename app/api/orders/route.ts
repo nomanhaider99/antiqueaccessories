@@ -40,8 +40,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const body = await request.json();
 
@@ -91,12 +90,14 @@ export async function POST(request: NextRequest) {
 
       return {
         product_id: product.id,
+        size: item.size,
         quantity: item.quantity,
         price: totalPrice,
       };
     });
 
-    const shipping_fee = shipping_mode === "express" ? 500 : 250;
+
+    const shipping_fee = shipping_mode === "express" ? 399 : 199;
     const total = subtotal + shipping_fee;
 
     const orderId = randomUUID();
@@ -122,6 +123,7 @@ export async function POST(request: NextRequest) {
         calculatedItems.map((item: any) => ({
           order_id: orderId,
           product_id: item.product_id,
+          size: item.size,          
           quantity: item.quantity,
           price: item.price,
         }))
