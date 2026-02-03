@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { db } from "@/db";
 import { admins } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { signAdminToken } from "@/lib/auth";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const { username, password } = await req.json();
 
   if (!username || !password) {

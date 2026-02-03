@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { verifyAdminToken } from "@/lib/auth";
@@ -6,7 +6,7 @@ import { db } from "@/db";
 import { admins } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-export async function PATCH(req: Request) {
+export async function PATCH(req: NextRequest) {
   const token = (await cookies())?.get("admin_token")?.value;
 
   console.log('Token: ', token)

@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { orders, orderItems, products } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  request: NextRequest,
+  ctx: RouteContext<'/api/orders/[id]'>
 ) {
-  const { id } = await params;
+  const { id } = await ctx.params;
 
   try {
     // 1. Get order
@@ -76,10 +76,10 @@ export async function GET(
 const VALID_STATUSES = ["pending", "accepted", "completed", "rejected"] as const;
 
 export async function PATCH(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  request: NextRequest,
+  ctx: RouteContext<'/api/orders/[id]'>
 ) {
-  const { id } = await params;
+  const { id } = await ctx.params;
   const { status } = await request.json();
 
   if (!VALID_STATUSES.includes(status)) {

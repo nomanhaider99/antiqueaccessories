@@ -1,26 +1,23 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { orderItems, orders, products } from "@/db/schema";
-import { eq, ilike, or, desc, inArray } from "drizzle-orm";
+import { eq, ilike, or, desc, inArray, and } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get("status");
     const q = searchParams.get("q");
 
-    let query = db
-      .select()
-      .from(orders)
-      .orderBy(desc(orders.createdAt));
+    const conditions = [];
 
     if (status) {
-      query = query.where(eq(orders.status, status as any));
+      conditions.push(eq(orders.status, status as any));
     }
 
     if (q) {
-      query = query.where(
+      conditions.push(
         or(
           ilike(orders.customer_name, `%${q}%`),
           ilike(orders.phone, `%${q}%`)
@@ -28,7 +25,11 @@ export async function GET(request: Request) {
       );
     }
 
-    const data = await query;
+    const data = await db
+      .select()
+      .from(orders)
+      .where(conditions.length ? and(...conditions) : undefined)
+      .orderBy(desc(orders.createdAt));
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
@@ -39,7 +40,8 @@ export async function GET(request: Request) {
   }
 }
 
-export async function POST(request: Request) {
+
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 

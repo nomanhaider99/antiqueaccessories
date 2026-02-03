@@ -1,18 +1,27 @@
 import { db } from "@/db";
 import { products } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  _req: Request,
-  { params }: { params: { id: string } }
+  _req: NextRequest,
+  ctx: RouteContext<'/api/products/[id]'>
 ) {
-  const { id } = await params;
   try {
+    const { id } = await ctx.params;
+
     const result = await db
       .select()
       .from(products)
-      .where(eq(products.id, id));
+      .where(eq(products.id, id))
+      .limit(1);
+
+    if (!result.length) {
+      return NextResponse.json(
+        { error: "Product not found" },
+        { status: 404 }
+      );
+    }
 
     return NextResponse.json({ data: result[0] });
   } catch {
@@ -23,26 +32,20 @@ export async function GET(
   }
 }
 
+/* DELETE PRODUCT */
 export async function DELETE(
-  _req: Request,
-  { params }: { params: { id: string } }
+  _req: NextRequest,
+  ctx: RouteContext<'/api/products/[id]'>
 ) {
   try {
-    const { id } = await params;
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "Product id is required" },
-        { status: 400 }
-      );
-    }
+    const { id } = await ctx.params;
 
     const deleted = await db
       .delete(products)
       .where(eq(products.id, id))
       .returning();
 
-    if (deleted.length === 0) {
+    if (!deleted.length) {
       return NextResponse.json(
         { error: "Product not found" },
         { status: 404 }
@@ -50,12 +53,10 @@ export async function DELETE(
     }
 
     return NextResponse.json(
-      { message: "Product deleted successfully", data: deleted[0] },
-      { status: 200 }
+      { message: "Product deleted successfully", data: deleted[0] }
     );
   } catch (error) {
     console.error("DELETE /api/products/[id] error:", error);
-
     return NextResponse.json(
       { error: "Failed to delete product" },
       { status: 500 }
@@ -64,75 +65,32 @@ export async function DELETE(
 }
 
 export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  ctx: RouteContext<'/api/products/[id]'>
 ) {
   try {
-    const { id } = await params;
-
-    if (!id) {
-      return NextResponse.json({ error: "Product id is required" }, { status: 400 });
-    }
-
+    const { id } = await ctx.params;
     const body = await req.json();
-
-    const {
-      article,
-      category,
-      collection,
-      price,
-      discountedPrice,
-      type,
-      size,
-      availability,
-      discount,
-      images,
-      description,
-      deliveryTime,
-      disclaimer,
-    } = body;
-
-    if (!article || !category || !collection || !price || !type || !size || !discountedPrice) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
 
     const updated = await db
       .update(products)
-      .set({
-        article,
-        category,
-        collection,
-        price,
-        discountedPrice,
-        type,
-        size,
-        availability,
-        discount,
-        images,
-        description,
-        deliveryTime,
-        disclaimer,
-      })
+      .set(body)
       .where(eq(products.id, id))
       .returning();
 
-    if (updated.length === 0) {
+    if (!updated.length) {
       return NextResponse.json(
         { error: "Product not found" },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(
-      { message: "Product updated successfully", data: updated[0] },
-      { status: 200 }
-    );
+    return NextResponse.json({
+      message: "Product updated successfully",
+      data: updated[0],
+    });
   } catch (error) {
     console.error("PATCH /api/products/[id] error:", error);
-
     return NextResponse.json(
       { error: "Failed to update product" },
       { status: 500 }
