@@ -4,20 +4,17 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { getCart, CartItem } from "@/lib/cart";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function Checkout() {
   const [loading, setLoading] = useState(false);
-  const [shippingMode, setShippingMode] =
-    useState<"standard" | "express">("standard");
-  const [paymentMode, setPaymentMode] =
-    useState<"cash" | "advance">("cash");
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const refreshCart = () => setCartItems(getCart());
+  const paymentMode = "advance"; // 🔒 only advance payment
 
   const [form, setForm] = useState({
     customer_name: "",
@@ -29,15 +26,18 @@ export default function Checkout() {
   });
 
   useEffect(() => {
-    refreshCart();
+    setCartItems(getCart());
   }, []);
 
   const subtotal = cartItems.reduce(
     (s, i) => s + i.price * i.quantity,
     0
   );
-  const shippingFee = shippingMode === "express" ? 399 : 199;
+
+  const shippingFee = 199;
   const total = subtotal + shippingFee;
+
+  const router = useRouter();
 
   const placeOrder = async () => {
     if (cartItems.length === 0) return;
@@ -50,7 +50,7 @@ export default function Checkout() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          shipping_mode: shippingMode,
+          shipping_mode: "standard",
           payment_mode: paymentMode,
           items: cartItems.map((i) => ({
             product_id: i.id,
@@ -63,17 +63,18 @@ export default function Checkout() {
       const data = await res.json();
 
       if (!res.ok) {
-        alert("Failed to place order: " + data.message);
-        setLoading(false);
+        toast.error(data.message || "Failed to place order");
         return;
       }
 
-      /** OPTIMISTIC SUCCESS */
-      alert(`Order placed successfully! Order ID: ${data.orderId}`);
+      toast.success("Order placed successfully");
+
       localStorage.removeItem("cart");
       setCartItems([]);
+
+      router.push(`/orders/${data.orderId}`);
     } catch {
-      alert("Something went wrong. Please try again.");
+      toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -84,7 +85,7 @@ export default function Checkout() {
       {/* LEFT */}
       <div className="space-y-8">
         {/* DELIVERY */}
-        <Card className="bg-none shadow-none border-none">
+        <Card className="shadow-none border-none">
           <CardHeader>
             <CardTitle>Delivery</CardTitle>
           </CardHeader>
@@ -111,49 +112,25 @@ export default function Checkout() {
           </CardContent>
         </Card>
 
-        {/* PAYMENT */}
-        <Card className="bg-none shadow-none border-none">
+        {/* PAYMENT — ADVANCE ONLY */}
+        <Card className="shadow-none border-none px-4">
           <CardHeader>
-            <CardTitle>Payment</CardTitle>
+            <CardTitle>Advance Payment</CardTitle>
           </CardHeader>
-          <CardContent>
-            <RadioGroup
-              defaultValue="cash"
-              onValueChange={(v) => setPaymentMode(v as any)}
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="cash" />
-                <Label>Cash on Delivery – PKR 500 Advance</Label>
-              </div>
+          <CardContent className="text-sm space-y-3 bg-zinc-50 p-4">
+            <p className="font-semibold">Payment Details:</p>
 
-              <div className="flex items-center space-x-2 mt-3">
-                <RadioGroupItem value="advance" />
-                <Label>Advance Payment</Label>
-              </div>
-            </RadioGroup>
-          </CardContent>
-        </Card>
+            <div>
+              <p className="font-medium">Bank Transfer (Meezan):</p>
+              <p>Account Title: MAHRUKH NASEEM</p>
+              <p>Account Number: 01320106440933</p>
+              <p>IBAN: PK56MEZN0001320106440933</p>
+            </div>
 
-        {/* SHIPPING */}
-        <Card className="bg-none shadow-none border-none">
-          <CardHeader>
-            <CardTitle>Shipping Method</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <RadioGroup
-              defaultValue="standard"
-              onValueChange={(v) => setShippingMode(v as any)}
-            >
-              <div className="flex items-center border p-3 mb-2">
-                <RadioGroupItem value="standard" />
-                <Label className="ml-2">Standard (Rs. 199)</Label>
-              </div>
-
-              <div className="flex items-center border p-3">
-                <RadioGroupItem value="express" />
-                <Label className="ml-2">Express (Rs. 399)</Label>
-              </div>
-            </RadioGroup>
+            <p className="text-red-600 font-semibold">
+              After payment, send screenshot on WhatsApp:
+            </p>
+            <p className="text-blue-600 font-bold">03XX-XXXXXXX</p>
           </CardContent>
         </Card>
 
@@ -162,44 +139,40 @@ export default function Checkout() {
           disabled={loading || cartItems.length === 0}
           className="w-full h-12 rounded-none"
         >
-          {loading ? "Placing Order..." : "Place Order"}
+          {loading ? "Processing..." : "Place Order"}
         </Button>
       </div>
 
       <div className="hidden lg:block bg-zinc-300" />
 
       {/* RIGHT */}
-      <div className="space-y-6">
-        <Card className="bg-none shadow-none border-none">
+      <div className="">
+        <Card className="shadow-none border-none">
           <CardHeader>
             <CardTitle>Order Summary</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {cartItems.map((item) => (
-              <div
-                key={`${item.id}-${item.size}`}
-                className="flex items-center gap-4"
-              >
+            {cartItems.map((item, index) => (
+              <div key={index} className="flex gap-3">
                 <Image
                   src={item.images[0]}
                   alt={item.article}
                   width={60}
                   height={60}
-                  className="rounded-md object-cover"
                 />
                 <div className="flex-1">
-                  <p className="font-medium">{item.article}</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p>{item.article}</p>
+                  <p className="text-xs">
                     Size {item.size} · Qty {item.quantity}
                   </p>
                 </div>
-                <p className="font-semibold">
+                <p>
                   Rs. {(item.price * item.quantity).toLocaleString()}
                 </p>
               </div>
             ))}
 
-            <div className="border-t pt-3 space-y-2 text-sm">
+            <div className="border-t pt-3 text-sm space-y-1">
               <div className="flex justify-between">
                 <span>Subtotal</span>
                 <span>Rs. {subtotal}</span>

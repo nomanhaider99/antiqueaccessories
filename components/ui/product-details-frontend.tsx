@@ -46,7 +46,6 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
     addToCart({
       id: product.id,
       article: product.article,
-      category: product.category,
       price: product.discountedPrice,
       quantity: 1,
       size: selectedSize,
@@ -62,7 +61,6 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
     addToCart({
       id: product.id,
       article: product.article,
-      category: product.category,
       price: product.discountedPrice,
       quantity: 1,
       size: selectedSize,
@@ -108,7 +106,7 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
         <div className="flex flex-col space-y-6">
           <div>
             <p className="text-sm uppercase tracking-widest text-gray-500 mb-2">
-              {product.collection} | {product.category}
+              {product.collection}
             </p>
             <h1 className="text-3xl font-light tracking-tight uppercase">
               {product.article}
@@ -164,7 +162,7 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
             <button
               disabled={!selectedSize || product.availability === "sold-out"}
               onClick={handleAddToCart}
-              className="w-full bg-black text-white py-4 uppercase disabled:bg-gray-300"
+              className="w-full bg-black text-white py-4 uppercase disabled:bg-gray-300 cursor-pointer"
             >
               Add to Cart
             </button>
@@ -172,7 +170,7 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
             <button
               disabled={!selectedSize || product.availability === "sold-out"}
               onClick={handleBuyNow}
-              className="w-full border border-black py-4 uppercase hover:bg-gray-50 disabled:opacity-50"
+              className="w-full border border-black py-4 uppercase hover:bg-gray-50 disabled:opacity-50 cursor-pointer"
             >
               Buy it Now
             </button>

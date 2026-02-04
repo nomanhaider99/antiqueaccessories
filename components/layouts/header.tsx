@@ -39,11 +39,12 @@ const Header = () => {
       {/* Desktop Navigation (UNCHANGED) */}
       <nav className="hidden lg:flex justify-center gap-10 pb-4 text-[12px] tracking-[0.25em] uppercase">
         <a href="/" className="hover:opacity-70">Home</a>
-        <a href="/products" className="hover:opacity-70">New Arrivals</a>
-        <a href="#" className="hover:opacity-70">Trending ’26</a>
-        <a href="#" className="hover:opacity-70">All Collections</a>
-        <a href="#" className="hover:opacity-70">FAQs</a>
-        <a href="#" className="hover:opacity-70">Contact Us</a>
+        <a href="/collections/new-arrivals" className="hover:opacity-70">New Arrivals</a>
+        <a href="/collections/casuals" className="hover:opacity-70">Casuals</a>
+        <a href="/collections/luxe-pret26" className="hover:opacity-70">Luxe Pret 26’</a>
+        <a href="/collections/lune" className="hover:opacity-70">Lune</a>
+        <a href="/collections/sale" className="hover:opacity-70">Sale</a>
+        <a href="/#footer" className="hover:opacity-70">Contact Us</a>
       </nav>
 
       {/* Mobile Navigation */}
@@ -51,11 +52,12 @@ const Header = () => {
         <div className="lg:hidden border-t bg-white">
           <nav className="flex flex-col px-6 py-4 gap-4 text-sm uppercase tracking-widest">
             <a href="/" className="hover:opacity-70">Home</a>
-            <a href="/products" className="hover:opacity-70">New Arrivals</a>
-            <a href="#" className="hover:opacity-70">Trending ’26</a>
-            <a href="#" className="hover:opacity-70">All Collections</a>
-            <a href="#" className="hover:opacity-70">FAQs</a>
-            <a href="#" className="hover:opacity-70">Contact Us</a>
+            <a href="/collections/new-arrivals" className="hover:opacity-70">New Arrivals</a>
+            <a href="/collections/casuals" className="hover:opacity-70">Casuals</a>
+            <a href="/collections/luxe-pret26" className="hover:opacity-70">Luxe Pret 26’</a>
+            <a href="/collections/lune" className="hover:opacity-70">Lune</a>
+            <a href="/collections/sale" className="hover:opacity-70">Sale</a>
+            <a href="/#footer" className="hover:opacity-70">Contact Us</a>
           </nav>
         </div>
       )}

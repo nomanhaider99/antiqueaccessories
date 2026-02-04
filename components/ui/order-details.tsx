@@ -173,7 +173,7 @@ export default function OrderDetails({
               <DetailRow label="Phone" value={order.phone} />
               <DetailRow
                 label="Address"
-                value={`${order.house_number ?? ''} ${order.street_number ?? ''} ${order.address}, ${order.city}`}
+                value={`${order.house_number ? `House No.  ${order.house_number},` : ''} ${order.street_number ? `Street No. ${order.street_number},` : ''} ${order.address}, ${order.city}`}
               />
             </div>
 

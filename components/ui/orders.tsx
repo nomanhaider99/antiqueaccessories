@@ -164,6 +164,12 @@ export default function Orders() {
 
               {/* Product */}
               <TableCell className="max-w-[200px]">
+                {order.house_number && order.street_number && (
+                  <div className="text-sm text-muted-foreground">
+                    House No: {order.house_number},
+                    Street No: {order.street_number}
+                  </div>
+                )}
                 <div className="font-medium text-wrap">{order.address}</div>
                 <div className="text-sm text-muted-foreground">{order.city}</div>
               </TableCell>

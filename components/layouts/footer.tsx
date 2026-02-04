@@ -8,7 +8,7 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-[#6e232a] text-white px-14 pt-20 pb-10">
+    <footer className="bg-[#6e232a] text-white px-14 pt-20 pb-10" id="footer">
       {/* Top section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
         {/* Newsletter */}
@@ -80,7 +80,7 @@ const Footer = () => {
       {/* Social icons */}
       <div className="flex gap-6 mt-20">
         <Facebook className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" />
-        <Instagram className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" />
+        <a href="https://www.instagram.com/qusoorpk"><Instagram className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" /></a>
         <Mail className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" />
         <Phone className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" />
       </div>

@@ -8,7 +8,6 @@ export async function POST(request: NextRequest) {
 
     const {
       article,
-      category,
       collection,
       price,
       type,
@@ -22,7 +21,7 @@ export async function POST(request: NextRequest) {
       disclaimer = "",
     } = body;
 
-    if (!article || !category || !collection || !price || !type || !size || !description || !discountedPrice || !images) {
+    if (!article || !collection || !price || !type || !size || !description || !discountedPrice || !images) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -31,7 +30,6 @@ export async function POST(request: NextRequest) {
 
     const result = await db.insert(products).values({
       article,
-      category,
       collection,
       price,
       type,

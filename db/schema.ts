@@ -12,7 +12,7 @@ import { pgEnum } from "drizzle-orm/pg-core";
 
 export const orderStatusEnum = pgEnum("order_status", ["pending", "accepted", "completed", "rejected"]);
 
-export const shippingModeEnum = pgEnum("shipping_mode", ["standard", "express"]);
+export const shippingModeEnum = pgEnum("shipping_mode", ["standard"]);
 
 export const paymentModeEnum = pgEnum("payment_mode", ["cash", "advance"]);
 
@@ -73,13 +73,9 @@ export const products = pgTable("products", {
   article: varchar("article", { length: 120 })
     .notNull(),
 
-  category: varchar("category", { length: 120 })
-    .notNull(),
-
   collection: varchar("collection", { length: 120 })
     .notNull(),
 
-  /* MATCHES order_items.price & orders totals */
   price: real("price")
     .notNull(),
 

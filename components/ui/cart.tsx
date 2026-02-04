@@ -68,7 +68,7 @@ export default function Cart() {
               <div className="flex-1">
                 <p className="text-sm font-medium">{item.article}</p>
                 <p className="text-xs text-muted-foreground">
-                  {item.category} · Size {item.size}
+                  · Size {item.size}
                 </p>
 
                 <div className="flex items-center justify-between mt-2">

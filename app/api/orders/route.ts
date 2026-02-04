@@ -71,13 +71,6 @@ export async function POST(request: Request) {
       .from(products)
       .where(inArray(products.id, productIds));
 
-    if (dbProducts.length !== items.length) {
-      return NextResponse.json(
-        { message: "One or more products not found" },
-        { status: 400 }
-      );
-    }
-
     // 2️⃣ Calculate prices
     let subtotal = 0;
 

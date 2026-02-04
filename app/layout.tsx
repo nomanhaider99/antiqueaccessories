@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { customfont } from "./font";
 import { CartProvider } from "@/lib/cart-context";
+import { Toaster } from "sonner";
 
 const dm_sans = DM_Sans({ subsets: ["latin"], weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900", "1000"] })
 
@@ -23,6 +24,7 @@ export default function RootLayout({
       >
         <CartProvider>
           {children}
+          <Toaster richColors position="top-center" />
         </CartProvider>
       </body>
     </html>

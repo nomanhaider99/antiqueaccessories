@@ -34,7 +34,6 @@ export async function GET(
         product: {
           id: products.id,
           article: products.article,
-          category: products.category,
           collection: products.collection,
           price: products.price,
           discountedPrice: products.discountedPrice,

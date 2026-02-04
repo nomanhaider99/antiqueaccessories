@@ -30,7 +30,6 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
 
   const [form, setForm] = useState({
     article: "",
-    category: "",
     collection: "",
     price: "",
     discountedPrice: "",
@@ -56,7 +55,6 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
 
         setForm({
           article: prod.article,
-          category: prod.category,
           collection: prod.collection,
           price: String(prod.price),
           discountedPrice: String(prod.discountedPrice),
@@ -106,11 +104,12 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
     const cleanSizes = form.sizes.filter(s => s.trim() !== "").join(", ");
     const cleanDelivery = form.deliveryTimes.filter(t => t.trim() !== "");
     const cleanDisclaimer = form.disclaimer.filter(d => d.trim() !== "").join(" | ");
-    const discountedPrice = priceNum - (priceNum * discountNum) / 100;
+    const discountedPrice = Math.round(
+      priceNum - (priceNum * discountNum) / 100
+    );
 
     const payload = {
       article: form.article,
-      category: form.category,
       collection: form.collection,
       price: priceNum,
       type: form.type,
@@ -205,24 +204,15 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
         {/* Category + Collection */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label>Category *</Label>
-            <Select value={form.category} onValueChange={val => handleChange("category", val)}>
-              <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="women">Women</SelectItem>
-                <SelectItem value="men">Men</SelectItem>
-                <SelectItem value="kids">Kids</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
             <Label>Collection *</Label>
             <Select value={form.collection} onValueChange={val => handleChange("collection", val)}>
               <SelectTrigger><SelectValue placeholder="Select collection" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="new-arrivals">New Arrivals</SelectItem>
-                <SelectItem value="top-selling">Top Selling</SelectItem>
+                <SelectItem value="casuals">Casuals</SelectItem>
+                <SelectItem value="luxe-pret26">Luxe Pret 26’</SelectItem>
+                <SelectItem value="lune">Lune</SelectItem>
+                <SelectItem value="sale">Sale</SelectItem>
               </SelectContent>
             </Select>
           </div>
