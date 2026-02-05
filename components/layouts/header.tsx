@@ -44,7 +44,7 @@ const Header = () => {
         <a href="/collections/luxe-pret26" className="hover:opacity-70">Luxe Pret 26’</a>
         <a href="/collections/lune" className="hover:opacity-70">Lune</a>
         <a href="/collections/sale" className="hover:opacity-70">Sale</a>
-        <a href="/#footer" className="hover:opacity-70">Contact Us</a>
+        <a href="/contactus" className="hover:opacity-70">Contact Us</a>
       </nav>
 
       {/* Mobile Navigation */}
@@ -57,7 +57,7 @@ const Header = () => {
             <a href="/collections/luxe-pret26" className="hover:opacity-70">Luxe Pret 26’</a>
             <a href="/collections/lune" className="hover:opacity-70">Lune</a>
             <a href="/collections/sale" className="hover:opacity-70">Sale</a>
-            <a href="/#footer" className="hover:opacity-70">Contact Us</a>
+            <a href="/contactus" className="hover:opacity-70">Contact Us</a>
           </nav>
         </div>
       )}

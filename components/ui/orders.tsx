@@ -171,7 +171,7 @@ export default function Orders() {
                   </div>
                 )}
                 <div className="font-medium text-wrap">{order.address}</div>
-                <div className="text-sm text-muted-foreground">{order.city}</div>
+                <div className="text-sm text-muted-foreground">{order.city}, {order.country}</div>
               </TableCell>
 
               {/* Order ID */}

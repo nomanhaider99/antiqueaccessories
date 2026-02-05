@@ -54,6 +54,7 @@ export async function POST(request: Request) {
       shipping_mode,
       payment_mode,
       items,
+      country
     } = body;
 
     if (!items?.length) {
@@ -63,7 +64,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // 1️⃣ Fetch products securely
     const productIds = items.map((i: any) => i.product_id);
 
     const dbProducts = await db
@@ -71,7 +71,6 @@ export async function POST(request: Request) {
       .from(products)
       .where(inArray(products.id, productIds));
 
-    // 2️⃣ Calculate prices
     let subtotal = 0;
 
     const calculatedItems = items.map((item: any) => {
@@ -95,13 +94,13 @@ export async function POST(request: Request) {
 
     const orderId = randomUUID();
 
-    // 3️⃣ Transaction
     await db.transaction(async (tx) => {
       await tx.insert(orders).values({
         id: orderId,
         customer_name,
         phone,
         city,
+        country,
         house_number,
         street_number,
         address,

@@ -25,19 +25,20 @@ export type ShippingMode = 'standard' | 'express'
 export type PaymentMode = 'cash' | 'advance'
 
 export interface Order {
-    id: string
-    customer_name: string
-    city: string
-    house_number?: string | null
-    street_number?: string | null
-    address: string
-    phone: string
-    subtotal: number
-    shipping_mode: ShippingMode
-    payment_mode: PaymentMode
-    shipping_fee: number
-    total: number
-    status: OrderStatus
-    createdAt: Date
-    updatedAt: Date
+  id: string
+  customer_name: string
+  city: string
+  country: string
+  house_number?: string | null
+  street_number?: string | null
+  address: string
+  phone: string
+  subtotal: number
+  shipping_mode: ShippingMode
+  payment_mode: PaymentMode
+  shipping_fee: number
+  total: number
+  status: OrderStatus
+  createdAt: Date
+  updatedAt: Date
 }

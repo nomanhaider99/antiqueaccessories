@@ -114,7 +114,6 @@ export default function Products() {
         <TableHeader>
           <TableRow className="bg-muted/40">
             <TableHead>Product</TableHead>
-            <TableHead>Category</TableHead>
             <TableHead>Collection</TableHead>
             <TableHead>Actual Price</TableHead>
             <TableHead>Discount</TableHead>
@@ -132,13 +131,8 @@ export default function Products() {
               <TableCell>
                 <div className="font-medium">{product.article}</div>
                 <div className="text-sm text-muted-foreground">
-                  Added on {new Date(product.createdAt).toDateString()}
+                  Updated on {new Date(product.createdAt).toDateString()}
                 </div>
-              </TableCell>
-
-              {/* Category */}
-              <TableCell className="font-medium">
-                {product.category}
               </TableCell>
 
               {/* Collection */}

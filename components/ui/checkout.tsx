@@ -19,6 +19,7 @@ export default function Checkout() {
   const [form, setForm] = useState({
     customer_name: "",
     city: "",
+    country: "",
     house_number: "",
     street_number: "",
     address: "",
@@ -92,6 +93,7 @@ export default function Checkout() {
           <CardContent className="space-y-4">
             {Object.entries({
               "Full Name": "customer_name",
+              Country: "country", // ✅ added
               City: "city",
               "House Number (Optional)": "house_number",
               "Street Number (Optional)": "street_number",
@@ -102,6 +104,7 @@ export default function Checkout() {
                 <Label>{label}</Label>
                 <Input
                   className="rounded-none"
+                  value={(form as any)[key]}
                   onChange={(e) =>
                     setForm({ ...form, [key]: e.target.value })
                   }
@@ -128,7 +131,7 @@ export default function Checkout() {
             </div>
 
             <p className="text-red-600 font-semibold">
-              After payment, send screenshot on WhatsApp:
+              Please transfer the amount and send screenshot to WhatsApp:
             </p>
             <p className="text-blue-600 font-bold">03XX-XXXXXXX</p>
           </CardContent>

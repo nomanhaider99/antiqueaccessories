@@ -2,9 +2,9 @@ import Image from "next/image"
 
 const Hero = () => {
   return (
-    <div className="relative w-screen h-screen">
+    <div className="relative w-full h-screen">
       <Image
-        src="/images/Hero.webp"
+        src="/images/Hero.png"
         alt="Hero"
         fill
         priority

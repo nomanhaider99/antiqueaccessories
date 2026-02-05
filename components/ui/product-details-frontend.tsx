@@ -52,7 +52,7 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
       images: product.images,
     });
 
-    refresh(); // ✅ THIS IS THE FIX
+    refresh();
   };
 
   const handleBuyNow = () => {
@@ -82,9 +82,8 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
               <button
                 key={idx}
                 onClick={() => setSelectedImage(img)}
-                className={`relative w-20 h-28 flex-shrink-0 border-2 ${
-                  selectedImage === img ? "border-black" : "border-transparent"
-                }`}
+                className={`relative w-20 h-28 flex-shrink-0 border-2 ${selectedImage === img ? "border-black" : "border-transparent"
+                  }`}
               >
                 <Image src={img} alt={product.article} fill className="object-cover" />
               </button>
@@ -145,11 +144,10 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`px-6 py-2 border text-sm ${
-                    selectedSize === size
+                  className={`px-6 py-2 border text-sm ${selectedSize === size
                       ? "bg-black text-white border-black"
                       : "border-gray-300 hover:border-black"
-                  }`}
+                    }`}
                 >
                   {size}
                 </button>
@@ -178,6 +176,13 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
 
           {/* INFO */}
           <div className="space-y-4 pt-6 border-t">
+            {
+              product.description && (
+                <div className="flex gap-3">
+                  {product.description}
+                </div>
+              )
+            }
             <div className="flex gap-3">
               <Truck className="w-5 h-5" />
               <p className="text-sm">
@@ -189,6 +194,7 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
               <Info className="w-5 h-5" />
               <p className="text-sm italic">{product.disclaimer}</p>
             </div>
+
           </div>
         </div>
       </div>
