@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Truck, Info, Ruler, X } from "lucide-react";
+import { Truck, Info, Ruler } from "lucide-react";
 import { products } from "@/db/schema";
 import { addToCart } from "@/lib/cart";
-import { useCart } from "@/lib/cart-context"; // ✅ IMPORTANT
+import { useCart } from "@/lib/cart-context";
 import { useRouter } from "next/navigation";
 import { useCurrencyStore } from "@/store/currency-store";
 
@@ -18,10 +18,9 @@ interface ProductDetailsProps {
 export default function ProductDetailsFrontend({ product }: ProductDetailsProps) {
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
   const [selectedSize, setSelectedSize] = useState("");
-  const [isSizeChartOpen, setIsSizeChartOpen] = useState(false);
 
   const router = useRouter();
-  const { refresh } = useCart(); // ✅ IMPORTANT
+  const { refresh } = useCart();
   const { currency, rates } = useCurrencyStore();
 
   const rate = rates[currency] ?? 1;
@@ -67,7 +66,7 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
       images: product.images,
     });
 
-    refresh(); // ✅ THIS IS THE FIX
+    refresh();
     router.push("/checkout");
   };
 
@@ -82,8 +81,9 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
               <button
                 key={idx}
                 onClick={() => setSelectedImage(img)}
-                className={`relative w-20 h-28 flex-shrink-0 border-2 ${selectedImage === img ? "border-black" : "border-transparent"
-                  }`}
+                className={`relative w-20 h-28 border-2 ${
+                  selectedImage === img ? "border-black" : "border-transparent"
+                }`}
               >
                 <Image src={img} alt={product.article} fill className="object-cover" />
               </button>
@@ -131,7 +131,7 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
               <span className="text-sm font-medium uppercase">Size</span>
 
               <button
-                onClick={() => setIsSizeChartOpen(true)}
+                onClick={() => window.open(SIZE_CHART_IMAGE_URL, "_blank")}
                 className="flex items-center gap-2 text-xs font-semibold text-green-700 uppercase"
               >
                 <Ruler className="w-4 h-4" />
@@ -144,10 +144,11 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`px-6 py-2 border text-sm ${selectedSize === size
+                  className={`px-6 py-2 border text-sm ${
+                    selectedSize === size
                       ? "bg-black text-white border-black"
                       : "border-gray-300 hover:border-black"
-                    }`}
+                  }`}
                 >
                   {size}
                 </button>
@@ -160,7 +161,7 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
             <button
               disabled={!selectedSize || product.availability === "sold-out"}
               onClick={handleAddToCart}
-              className="w-full bg-black text-white py-4 uppercase disabled:bg-gray-300 cursor-pointer"
+              className="w-full bg-black text-white py-4 uppercase disabled:bg-gray-300"
             >
               Add to Cart
             </button>
@@ -168,7 +169,7 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
             <button
               disabled={!selectedSize || product.availability === "sold-out"}
               onClick={handleBuyNow}
-              className="w-full border border-black py-4 uppercase hover:bg-gray-50 disabled:opacity-50 cursor-pointer"
+              className="w-full border border-black py-4 uppercase hover:bg-gray-50 disabled:opacity-50"
             >
               Buy it Now
             </button>
@@ -176,13 +177,10 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
 
           {/* INFO */}
           <div className="space-y-4 pt-6 border-t">
-            {
-              product.description && (
-                <div className="flex gap-3">
-                  {product.description}
-                </div>
-              )
-            }
+            {product.description && (
+              <div>{product.description}</div>
+            )}
+
             <div className="flex gap-3">
               <Truck className="w-5 h-5" />
               <p className="text-sm">
@@ -194,32 +192,9 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
               <Info className="w-5 h-5" />
               <p className="text-sm italic">{product.disclaimer}</p>
             </div>
-
           </div>
         </div>
       </div>
-
-      {/* SIZE CHART MODAL */}
-      {isSizeChartOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center">
-          <div className="bg-white max-w-2xl w-full relative">
-            <button
-              onClick={() => setIsSizeChartOpen(false)}
-              className="absolute top-3 right-3"
-            >
-              <X />
-            </button>
-
-            <Image
-              src={SIZE_CHART_IMAGE_URL}
-              alt="Size Chart"
-              width={800}
-              height={600}
-              className="object-contain"
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
