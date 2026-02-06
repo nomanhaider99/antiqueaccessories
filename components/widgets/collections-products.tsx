@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useCurrency } from "@/store/currency-store";
 
 type Product = {
   id: string;
@@ -14,6 +15,11 @@ type Product = {
 };
 
 export default function CollectionProducts({ products, loading, collection }: { products: Product[]; loading: boolean, collection: string }) {
+
+  const { currency, rate } = useCurrency();
+
+  const formatPrice = (value: number) =>
+    `${currency} ${(rate * value).toFixed(2)}`;
 
   if (loading) {
     return (
@@ -85,8 +91,7 @@ export default function CollectionProducts({ products, loading, collection }: { 
                 </p>
 
                 <p className="text-sm">
-                  Rs.{" "}
-                  {(product.discountedPrice || product.price).toLocaleString()}
+                  {formatPrice((product.discountedPrice || product.price))}
                 </p>
               </div>
             </Link>

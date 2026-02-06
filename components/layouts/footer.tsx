@@ -8,7 +8,7 @@ import Link from "next/link"
 
 const Footer = () => {
   return (
-    <footer className="bg-[#6e232a] text-white px-14 pt-20 pb-10" id="footer">
+    <footer className="bg-[#6e232a] text-white px-14 pt-20 pb-10 w-full" id="footer">
       {/* Top section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
         {/* Newsletter */}

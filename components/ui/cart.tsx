@@ -16,14 +16,19 @@ import { Button } from "@/components/ui/button";
 
 import { updateQuantity, removeFromCart } from "@/lib/cart";
 import { useCart } from "@/lib/cart-context";
+import { useCurrency } from "@/store/currency-store";
 
 export default function Cart() {
   const { cart: cartItems, refresh } = useCart();
+  const { currency, rate } = useCurrency();
 
-  const subtotal = cartItems.reduce(
+  const formatPrice = (value: number) =>
+    `${currency} ${(rate*value).toFixed(2)}`;
+
+  const subtotal = (rate * cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
-  );
+  )).toFixed(2);
 
   return (
     <Sheet>
@@ -101,7 +106,7 @@ export default function Cart() {
 
                   {/* Price */}
                   <p className="text-sm font-semibold">
-                    Rs. {(item.price * item.quantity).toLocaleString()}
+                    {formatPrice(item.price*item.quantity)}
                   </p>
                 </div>
               </div>
@@ -126,7 +131,7 @@ export default function Cart() {
             <div className="flex justify-between text-sm">
               <span>Subtotal</span>
               <span className="font-semibold">
-                Rs. {subtotal.toLocaleString()}
+                {currency} {subtotal.toLocaleString()}
               </span>
             </div>
 

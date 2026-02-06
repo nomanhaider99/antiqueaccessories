@@ -9,12 +9,14 @@ import Image from "next/image";
 import { getCart, CartItem } from "@/lib/cart";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useCurrency } from "@/store/currency-store";
 
 export default function Checkout() {
   const [loading, setLoading] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const paymentMode = "advance"; // 🔒 only advance payment
+  const paymentMode = "advance";
+  const { currency, rate } = useCurrency();
 
   const [form, setForm] = useState({
     customer_name: "",
@@ -39,6 +41,13 @@ export default function Checkout() {
   const total = subtotal + shippingFee;
 
   const router = useRouter();
+  const formatPrice = (value: number) =>
+    `${currency} ${value.toFixed(2)}`;
+
+  const convertedSubtotal = subtotal * rate;
+  const convertedShipping = shippingFee * rate;
+  const convertedTotal = total * rate;
+
 
   const placeOrder = async () => {
     if (cartItems.length === 0) return;
@@ -51,6 +60,11 @@ export default function Checkout() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
+          currency,
+          exchange_rate: rate,
+          subtotal: convertedSubtotal,
+          shipping_fee: convertedShipping,
+          total: convertedTotal,
           shipping_mode: "standard",
           payment_mode: paymentMode,
           items: cartItems.map((i) => ({
@@ -169,24 +183,24 @@ export default function Checkout() {
                     Size {item.size} · Qty {item.quantity}
                   </p>
                 </div>
-                <p>
-                  Rs. {(item.price * item.quantity).toLocaleString()}
-                </p>
+                <p>{formatPrice(item.price * item.quantity * rate)}</p>
               </div>
             ))}
 
             <div className="border-t pt-3 text-sm space-y-1">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>Rs. {subtotal}</span>
+                <span>{formatPrice(convertedSubtotal)}</span>
               </div>
+
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>Rs. {shippingFee}</span>
+                <span>{formatPrice(convertedShipping)}</span>
               </div>
+
               <div className="flex justify-between font-semibold">
                 <span>Total</span>
-                <span>Rs. {total}</span>
+                <span>{formatPrice(convertedTotal)}</span>
               </div>
             </div>
           </CardContent>

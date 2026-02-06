@@ -1,13 +1,22 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-export const useCurrencyStore = create<{
-  currency: keyof typeof import("@/lib/currencies").currencies;
-  rates: Record<string, number>;
-  setCurrency: (c: any) => void;
-  setRates: (r: any) => void;
-}>((set) => ({
-  currency: "PKR",
-  rates: { PKR: 1 },
-  setCurrency: (currency) => set({ currency }),
-  setRates: (rates) => set({ rates }),
-}));
+type CurrencyState = {
+  currency: string;
+  rate: number;
+  setCurrency: (currency: string, rate: number) => void;
+};
+
+export const useCurrency = create<CurrencyState>()(
+  persist(
+    (set) => ({
+      currency: "PKR",
+      rate: 1,
+      setCurrency: (currency, rate) =>
+        set({ currency, rate }),
+    }),
+    {
+      name: "currency-storage",
+    }
+  )
+);

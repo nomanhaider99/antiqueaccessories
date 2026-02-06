@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function AboutSection() {
   return (
     <section className="w-full bg-white" id="aboutus">
-      <div className="mx-auto px-6 py-16 md:py-24 w-full max-w-7xl">
+      <div className="mx-auto px-6 py-16 md:py-24 w-full">
         {/* Changed to grid-cols-1 for mobile, md:grid-cols-2 for desktop */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center">
 
@@ -31,7 +31,7 @@ export default function AboutSection() {
             </h2>
 
             <p className="text-sm leading-7 text-zinc-600">
-              The journey of QusoorPK is that of an Eclectic Wanderer —
+              The journey of Qusoor is that of an Eclectic Wanderer —
               a soul navigating through a world of elegance and opulence.
               His work draws inspiration from ancient crafts, timeless
               artifacts, and majestic architecture, brought to life through

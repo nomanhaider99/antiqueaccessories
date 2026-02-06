@@ -8,9 +8,9 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import Image from "next/image"; // Assuming you use Next.js Image
+import Image from "next/image"; 
+import { useCurrency } from "@/store/currency-store";
 
-// Updated to match your specific interface requirements
 type Order = {
   id: string;
   customer_name: string;
@@ -76,6 +76,10 @@ export default function OrderDetails({
 }: OrderDetailsSheetProps) {
   const [order, setOrder] = useState<OrderDetails | null>(null);
   const [loading, setLoading] = useState(false);
+  const { currency, rate } = useCurrency();
+
+  const formatPrice = (value: number) =>
+    `${currency} ${(rate * value).toFixed(2)}`;
 
   useEffect(() => {
     if (!orderId || !open) return;
@@ -135,7 +139,7 @@ export default function OrderDetails({
                       {item.product.article}
                     </span>
                     <span className="text-sm text-gray-400">
-                      Rs {item.product.discountedPrice}/-
+                      {formatPrice(item.product.discountedPrice)}
                     </span>
                   </div>
                 </div>
@@ -143,7 +147,7 @@ export default function OrderDetails({
                 <div className="flex gap-12 text-sm">
                   <span className="text-gray-500">{item.quantity} pcs</span>
                   <span className="font-semibold text-gray-900">
-                    Rs {item.itemPrice}/-
+                    {formatPrice(item.itemPrice)}
                   </span>
                 </div>
               </div>
@@ -161,9 +165,9 @@ export default function OrderDetails({
             <div className="p-6 flex flex-col gap-4">
               <DetailRow label="Ordered On" value={new Date(order.createdAt).toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' })} />
               <DetailRow label="Delivery Services" value={order.shipping_mode.charAt(0).toUpperCase() + order.shipping_mode.slice(1)} />
-              <DetailRow label="Payment method" value={order.payment_mode === 'advance' ? 'Bank Transfer' : 'Cash on Delivery'} />
+              <DetailRow label="Payment method" value={order.payment_mode === 'advance' ? 'Advance' : 'Cash on Delivery'} />
               <DetailRow label="Status" value={<span className="capitalize">{order.status}</span>} />
-            </div>
+            </div>  
 
             <Separator />
 
@@ -180,9 +184,9 @@ export default function OrderDetails({
             <Separator />
             {/* Price Section */}
             <div className="p-6 flex flex-col gap-4">
-              <DetailRow label="Subtotal" value={`Rs ${order.subtotal}/-`} />
-              <DetailRow label="Shipping Fee" value={`Rs ${order.shipping_fee}/-`} />
-              <DetailRow label="Total" value={`Rs ${order.total}/-`} />
+              <DetailRow label="Subtotal" value={`${formatPrice(order.subtotal)}`} />
+              <DetailRow label="Shipping Fee" value={`${formatPrice(order.shipping_fee)}`} />
+              <DetailRow label="Total" value={`${formatPrice(order.total)}`} />
             </div>
 
           </div>

@@ -1,8 +1,8 @@
-export const currencies = {
-  PKR: { label: "PKR", symbol: "Rs.", flag: "🇵🇰" },
-  USD: { label: "USD", symbol: "$", flag: "🇺🇸" },
-  EUR: { label: "EUR", symbol: "€", flag: "🇪🇺" },
-  GBP: { label: "GBP", symbol: "£", flag: "🇬🇧" },
-  CAD: { label: "CAD", symbol: "$", flag: "🇨🇦" },
-  AED: { label: "AED", symbol: "د.إ", flag: "🇦🇪" },
-};
+export const currencies = [
+  { code: "PKR", label: "Pakistani Rupee", flag: "🇵🇰" },
+  { code: "USD", label: "US Dollar", flag: "🇺🇸" },
+  { code: "EUR", label: "Euro", flag: "🇪🇺" },
+  { code: "GBP", label: "British Pound", flag: "🇬🇧" },
+  { code: "AED", label: "UAE Dirham", flag: "🇦🇪" },
+  { code: "SAR", label: "Saudi Riyal", flag: "🇸🇦" },
+];

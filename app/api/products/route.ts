@@ -1,68 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { products } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const body = await request.json();
+    const { searchParams } = new URL(request.url);
+    const collection = searchParams.get("collection");
 
-    const {
-      article,
-      collection,
-      price,
-      type,
-      size,
-      availability = "available",
-      description,
-      discount = 0,
-      discountedPrice,
-      deliveryTime = [],
-      images,
-      disclaimer = "",
-    } = body;
+    let query = db.select().from(products).$dynamic();
 
-    if (!article || !collection || !price || !type || !size || !description || !discountedPrice || !images) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
+    if (collection) {
+      query = query.where(eq(products.collection, collection));
     }
 
-    const result = await db.insert(products).values({
-      article,
-      collection,
-      price,
-      type,
-      size,
-      availability,
-      description,
-      discount,
-      discountedPrice,
-      deliveryTime,
-      images,
-      disclaimer,
-    }).returning();
-
-    return NextResponse.json({ data: result }, { status: 201 });
-  } catch (error) {
-    return NextResponse.json(
-      { error: String(error) },
-      { status: 500 }
-    );
-  }
-}
-
-export async function GET() {
-  try {
-    const data = await db.select().from(products)
-
-    return NextResponse.json(data, { status: 200 })
-  } catch (error) {
-    console.error("GET /api/products error:", error)
-
+    const data = await query;
+    return NextResponse.json(data, { status: 200 });
+  } catch {
     return NextResponse.json(
       { error: "Failed to fetch products" },
       { status: 500 }
-    )
+    );
   }
 }

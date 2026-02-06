@@ -47,6 +47,13 @@ export const orders = pgTable("orders", {
   status: orderStatusEnum("status")
     .notNull()
     .default("pending"),
+  currency: varchar("currency", { length: 3 })
+    .notNull()
+    .default("PKR"),
+
+  exchange_rate: real("exchange_rate")
+    .notNull(), 
+
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -134,7 +141,7 @@ export const orderItems = pgTable("order_items", {
     .notNull()
     .references(() => products.id, { onDelete: "cascade" }),
 
-  size: text("size")      
+  size: text("size")
     .notNull(),
 
   quantity: integer("quantity")

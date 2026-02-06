@@ -1,24 +1,27 @@
+'use client'
+
 import Image from "next/image";
 import Link from "next/link";
-import { db } from "@/db";
-import { products } from "@/db/schema";
-import { eq } from "drizzle-orm";
-import { notFound } from "next/navigation";
+import { useCurrency } from "@/store/currency-store";
+import { useEffect, useState } from "react";
+import { Product } from "@/types";
 
-export default async function NewArrivals() {
+export default function NewArrivals() {
   const collection = "new-arrivals";
+  const { currency, rate } = useCurrency();
+  const [data, setData] = useState<Product[]>([]);
 
-  const data = await db
-    .select()
-    .from(products)
-    .where(eq(products.collection, collection));
+  const formatPrice = (value: number) =>
+    `${currency} ${(rate * value).toFixed(2)}`;
 
-  if (!data.length) {
-    notFound();
-  }
+  useEffect(() => {
+    fetch(`/api/products?collection=new-arrivals`)
+      .then(res => res.json())
+      .then(setData);
+  }, [])
 
   return (
-    <section className="max-w-7xl mx-auto px-6 md:py-16 py-6 space-y-5">
+    <section className="w-full mx-auto px-6 md:py-16 py-6 space-y-5">
       <h1 className="md:text-[2.5rem] text-center text-[1.5rem] font-light">
         {" "}
         {collection
@@ -48,7 +51,7 @@ export default async function NewArrivals() {
               className="group"
             >
               {/* IMAGE */}
-              <div className="relative w-full aspect-[2/3] overflow-hidden bg-zinc-100">
+              <div className="relative w-full aspect-[2/3] overflow-hidden flex justify-center">
                 {hasDiscount && (
                   <span className="absolute top-3 left-3 z-10 bg-green-700 text-white text-[11px] font-semibold px-3 py-1 tracking-wider uppercase">
                     {discountPercent}% OFF
@@ -75,7 +78,7 @@ export default async function NewArrivals() {
                   {product.article}
                 </p>
                 <p className="text-base font-semibold">
-                  Rs. {(product.discountedPrice || product.price).toLocaleString()}
+                  {formatPrice((product.discountedPrice || product.price))}
                 </p>
               </div>
 

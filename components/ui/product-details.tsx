@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
+import { useCurrency } from "@/store/currency-store";
 
 type Product = {
   id: string;
@@ -41,6 +42,10 @@ export default function ProductDetails({
 }: ProductDetailsSheetProps) {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(false);
+  const { currency, rate } = useCurrency();
+
+  const formatPrice = (value: number) =>
+    `${currency} ${(rate * value).toFixed(2)}`;
 
   useEffect(() => {
     if (!productId || !open) return;
@@ -109,7 +114,6 @@ export default function ProductDetails({
               {/* Meta */}
               <div className="p-6 flex flex-col gap-4">
                 <DetailRow label="Article" value={product.article} />
-                <DetailRow label="Category" value={product.category} />
                 <DetailRow label="Collection" value={product.collection} />
                 <DetailRow label="Type" value={product.type} />
                 <DetailRow label="Size" value={product.size} />
@@ -140,15 +144,15 @@ export default function ProductDetails({
               <div className="p-6 flex flex-col gap-4">
                 <DetailRow
                   label="Original price"
-                  value={`Rs. ${product.price}/-`}
+                  value={`${formatPrice(product.price)}`}
                 />
                 <DetailRow
                   label="Discount"
                   value={`${product.discount}%`}
                 />
                 <DetailRow
-                  label="Final price"
-                  value={`Rs. ${product.discountedPrice}/-`}
+                  label="Discounted price"
+                  value={`${formatPrice(product.discountedPrice)}`}
                 />
               </div>
 

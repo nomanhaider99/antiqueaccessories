@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import EditProduct from "@/components/ui/edit-product";
 import { useTabStore } from "@/store/tab"
+import { useCurrency } from "@/store/currency-store"
 
 const availabilityStyles: Record<ProductAvailability, string> = {
   available: "bg-green-100 text-green-700",
@@ -45,9 +46,11 @@ export default function Products() {
   const [openDetails, setOpenDetails] = useState(false)
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [deleting, setDeleting] = useState(false)
-  const [openEdit, setOpenEdit] = useState(false);
-  const [editProductId, setEditProductId] = useState<string | null>(null);
   const { setActiveTab, selectedProductId, setSelectedProductId } = useTabStore();
+  const { currency, rate } = useCurrency();
+  
+  const formatPrice = (value: number) =>
+    `${currency} ${(rate * value).toFixed(2)}`;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -142,7 +145,7 @@ export default function Products() {
 
               {/* Price */}
               <TableCell className="font-medium">
-                Rs. {product.price}/-
+                {formatPrice(product.price)}
               </TableCell>
 
               {/* Discount */}
@@ -152,7 +155,7 @@ export default function Products() {
 
               {/* Discounted */}
               <TableCell className="font-medium">
-                Rs. {product.discountedPrice}/-
+                {formatPrice(product.discountedPrice)}
               </TableCell>
 
               {/* Size */}

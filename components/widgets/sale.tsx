@@ -1,26 +1,28 @@
+'use client'
+
+import { useCurrency } from "@/store/currency-store";
+import { Product } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { db } from "@/db";
-import { products } from "@/db/schema";
-import { eq } from "drizzle-orm";
-import { notFound } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default async function Sale() {
+export default function Sale() {
   const collection = "sale";
+  const [data, setData] = useState<Product[]>([]);
+  const { currency, rate } = useCurrency();
 
-  const data = await db
-    .select()
-    .from(products)
-    .where(eq(products.collection, collection));
+  const formatPrice = (value: number) =>
+    `${currency} ${(rate * value).toFixed(2)}`;
 
-  if (!data.length) {
-    notFound();
-  }
+  useEffect(() => {
+    fetch(`/api/products?collection=${collection}`)
+      .then(res => res.json())
+      .then(setData);
+  }, []);
 
   return (
-    <section className="max-w-7xl mx-auto px-6 md:py-16 py-6 space-y-5">
+    <section className="w-full mx-auto px-6 md:py-16 py-6 space-y-5">
       <h1 className="md:text-[2.5rem] text-center text-[1.5rem] font-light">
-        {" "}
         {collection
           .split("-")
           .map(w => w.charAt(0).toUpperCase() + w.slice(1))
@@ -35,10 +37,8 @@ export default async function Sale() {
 
           const discountPercent = hasDiscount
             ? Math.round(
-              ((product.price - product.discountedPrice) /
-                product.price) *
-              100
-            )
+                ((product.price - product.discountedPrice) / product.price) * 100
+              )
             : 0;
 
           return (
@@ -48,7 +48,7 @@ export default async function Sale() {
               className="group"
             >
               {/* IMAGE */}
-              <div className="relative w-full aspect-[2/3] overflow-hidden bg-zinc-100">
+              <div className="relative w-full aspect-[2/3] overflow-hidden flex justify-center">
                 {hasDiscount && (
                   <span className="absolute top-3 left-3 z-10 bg-green-700 text-white text-[11px] font-semibold px-3 py-1 tracking-wider uppercase">
                     {discountPercent}% OFF
@@ -70,15 +70,15 @@ export default async function Sale() {
                 )}
               </div>
 
+              {/* TEXT */}
               <div className="mt-6 text-center space-y-2">
                 <p className="text-[15px] tracking-[0.3em] uppercase font-medium">
                   {product.article}
                 </p>
                 <p className="text-base font-semibold">
-                  Rs. {(product.discountedPrice || product.price).toLocaleString()}
+                  {formatPrice(product.discountedPrice || product.price)}
                 </p>
               </div>
-
             </Link>
           );
         })}

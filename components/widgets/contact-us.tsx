@@ -16,7 +16,6 @@ export default function ContactUs() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<null | "success" | "error">(null);
   const [error, setError] = useState("");
-  const [policy, setPolicy] = useState(false);
 
 
   return (
@@ -97,26 +96,6 @@ export default function ContactUs() {
                 onChange={(e) => setMessage(e.target.value)}
               />
 
-
-              <div className="flex items-center gap-2 mb-6">
-                <Checkbox
-                  id="policy"
-                  checked={policy}
-                  onCheckedChange={(v) => setPolicy(!!v)}
-                />
-
-                <label
-                  htmlFor="policy"
-                  className="text-xs text-muted-foreground"
-                >
-                  I agree to the{" "}
-                  <span className="underline cursor-pointer">
-                    Privacy Policy
-                  </span>{" "}
-                  of the website.
-                </label>
-              </div>
-
               <Button
                 disabled={loading}
                 onClick={async () => {
@@ -125,11 +104,6 @@ export default function ContactUs() {
 
                   if (!name || !email || !message) {
                     setError("All fields are required.");
-                    return;
-                  }
-
-                  if (!policy) {
-                    setError("Please accept the Privacy Policy.");
                     return;
                   }
 
@@ -148,7 +122,6 @@ export default function ContactUs() {
                     setName("");
                     setEmail("");
                     setMessage("");
-                    setPolicy(false);
                   } else {
                     setStatus("error");
                     setError("Something went wrong. Please try again.");

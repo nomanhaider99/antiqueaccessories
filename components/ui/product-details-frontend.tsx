@@ -7,7 +7,7 @@ import { products } from "@/db/schema";
 import { addToCart } from "@/lib/cart";
 import { useCart } from "@/lib/cart-context";
 import { useRouter } from "next/navigation";
-import { useCurrencyStore } from "@/store/currency-store";
+import { useCurrency } from "@/store/currency-store";
 
 type Product = typeof products.$inferSelect;
 
@@ -21,20 +21,12 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
 
   const router = useRouter();
   const { refresh } = useCart();
-  const { currency, rates } = useCurrencyStore();
+  const { rate, currency } = useCurrency();
 
-  const rate = rates[currency] ?? 1;
-
-  const displayDiscountedPrice =
-    currency === "PKR"
-      ? product.discountedPrice
-      : Math.round(product.discountedPrice * rate * 100) / 100;
-
-  const displayOriginalPrice =
-    currency === "PKR"
-      ? product.price
-      : Math.round(product.price * rate * 100) / 100;
-
+  
+  const displayPrice = (price: number) =>
+    `${currency} ${(price * rate).toFixed(2)}`;
+  
   const sizes = product.size.split(",").map((s) => s.trim());
 
   const SIZE_CHART_IMAGE_URL = "/images/sizechart.jpeg";
@@ -114,11 +106,11 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
 
           <div className="flex items-center gap-4">
             <p className="text-2xl font-medium">
-              Rs. {displayDiscountedPrice.toLocaleString()}
+              {displayPrice(product.discountedPrice)}
             </p>
             {product.discount > 0 && (
               <p className="text-lg text-gray-400 line-through">
-                Rs. {displayOriginalPrice.toLocaleString()}
+                {displayPrice(product.price)}
               </p>
             )}
           </div>

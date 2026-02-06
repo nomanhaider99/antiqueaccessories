@@ -1,11 +1,19 @@
-import { NextResponse } from "next/server";
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const to = searchParams.get("to");
 
-export async function GET() {
-    const res = await fetch(
-        "https://api.exchangerate.host/latest?base=PKR",
-        { next: { revalidate: 3600 } }
-    );
+  if (!to) {
+    return Response.json({ error: "Missing currency" }, { status: 400 });
+  }
 
-    const data = await res.json();
-    return NextResponse.json(data);
+  const res = await fetch(
+    `https://hexarate.paikama.co/api/rates/PKR/${to}/latest`,
+    { next: { revalidate: 3600 } } // cache 1 hour
+  );
+
+  const data = await res.json();
+
+  return Response.json({
+    rate: data.data.mid,
+  });
 }

@@ -1,3 +1,6 @@
+'use client'
+
+import { useCurrency } from "@/store/currency-store";
 import Image from "next/image";
 
 type OrderStatus = "pending" | "accepted" | "completed" | "rejected";
@@ -46,6 +49,9 @@ const statusLabel: Record<OrderStatus, string> = {
 };
 
 export default function OrderDetails({ order, items }: Props) {
+  const { currency, rate } = useCurrency();
+  const formatPrice = (value: number) =>
+    `${currency} ${(value*rate).toFixed(2)}`;
   return (
     <div className="max-w-4xl mx-auto bg-white p-10 rounded-2xl shadow">
 
@@ -132,7 +138,7 @@ export default function OrderDetails({ order, items }: Props) {
             </div>
 
             <p className="font-medium text-gray-900">
-              Rs. {(item.price * item.quantity).toFixed(2)}
+              {formatPrice(item.price*item.quantity)}
             </p>
           </div>
         ))}
@@ -143,20 +149,20 @@ export default function OrderDetails({ order, items }: Props) {
         <div className="flex justify-between">
           <span className="text-gray-500">Subtotal</span>
           <span className="font-medium">
-            Rs. {order.subtotal.toFixed(2)}
+            {formatPrice(order.subtotal)}
           </span>
         </div>
 
         <div className="flex justify-between">
           <span className="text-gray-500">Shipping</span>
           <span className="font-medium">
-            Rs. {order.shipping_fee.toFixed(2)}
+            {formatPrice(order.shipping_fee)}
           </span>
         </div>
 
         <div className="flex justify-between text-base font-semibold pt-4 border-t">
           <span>Total</span>
-          <span>Rs. {order.total.toFixed(2)}</span>
+          <span>{formatPrice(order.total)}</span>
         </div>
       </div>
     </div>

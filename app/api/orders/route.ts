@@ -54,7 +54,9 @@ export async function POST(request: Request) {
       shipping_mode,
       payment_mode,
       items,
-      country
+      country,
+      exchange_rate,
+      currency
     } = body;
 
     if (!items?.length) {
@@ -109,6 +111,8 @@ export async function POST(request: Request) {
         total,
         shipping_mode,
         payment_mode,
+        exchange_rate,
+        currency
       });
 
       await tx.insert(orderItems).values(

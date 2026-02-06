@@ -23,6 +23,7 @@ import { Order } from "@/types"
 import { MdEdit } from "react-icons/md"
 import { FaTrash } from "react-icons/fa6"
 import OrderDetails from "./order-details"
+import { useCurrency } from "@/store/currency-store"
 
 const formatDate = (date: string | Date) =>
   new Date(date).toLocaleDateString("en-US", {
@@ -57,6 +58,10 @@ export default function Orders() {
     "all" | "pending" | "accepted" | "completed" | "rejected"
   >("all");
   const [search, setSearch] = React.useState("");
+  const { currency, rate } = useCurrency();
+
+  const formatPrice = (value: number) =>
+    `${currency} ${(value*rate).toFixed(2)}`;
 
   const filterLabel =
     status === "all"
@@ -194,7 +199,7 @@ export default function Orders() {
 
               {/* Amount */}
               <TableCell>
-                <div className="font-medium">Rs. {order.total}/- </div>
+                <div className="font-medium">{formatPrice(order.total)}</div>
                 <div className="text-sm text-muted-foreground">
                   {order.payment_mode == "cash" ? "Cash on Delivery" : "Advance Payment"}
                 </div>
