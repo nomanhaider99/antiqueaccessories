@@ -8,7 +8,14 @@ const Hero = () => {
         alt="Hero"
         fill
         priority
-        className="object-cover"
+        className="object-cover sm:block hidden"
+      />
+      <Image
+        src="/images/HeroMobile.png"
+        alt="Hero"
+        fill
+        priority
+        className="object-cover block sm:hidden"
       />
     </div>
   )

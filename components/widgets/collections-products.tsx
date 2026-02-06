@@ -30,7 +30,7 @@ export default function CollectionProducts({ products, loading, collection }: { 
   }
 
   return (
-    <section className="max-w-7xl mx-auto px-6 md:py-16 py-4 space-y-5">
+    <section className="w-full mx-auto px-6 md:py-16 py-4 space-y-5">
       <h1 className="md:text-[2.5rem] text-[1.5rem] font-light">
         Our{" "}
         {collection
