@@ -8,15 +8,12 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const collection = searchParams.get("collection");
 
-    let query = db.select().from(products).$dynamic();
+    const data = collection
+      ? await db.select().from(products).where(eq(products.collection, collection))
+      : await db.select().from(products);
 
-    if (collection) {
-      query = query.where(eq(products.collection, collection));
-    }
-
-    const data = await query;
     return NextResponse.json(data, { status: 200 });
-  } catch {
+  } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch products" },
       { status: 500 }
