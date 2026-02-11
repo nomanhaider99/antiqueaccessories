@@ -22,10 +22,9 @@ type Order = {
 
 type Item = {
   id: string;
-  article: string;
+  title: string;
   quantity: number;
-  price: number;
-  size: string;
+  price: number
   images: string[];
 };
 
@@ -122,17 +121,17 @@ export default function OrderDetails({ order, items }: Props) {
             <div className="flex items-center gap-4">
               <Image
                 src={item.images[0]}
-                alt={item.article}
+                alt={item.title}
                 width={80}
                 height={80}
                 className="rounded-md object-cover"
               />
               <div>
                 <p className="font-medium text-gray-900">
-                  {item.article}
+                  {item.title}
                 </p>
                 <p className="text-sm text-gray-500">
-                  Qty: {item.quantity} • Size: {item.size}
+                  Quantity: {item.quantity} 
                 </p>
               </div>
             </div>

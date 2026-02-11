@@ -69,8 +69,7 @@ export default function Checkout() {
           payment_mode: paymentMode,
           items: cartItems.map((i) => ({
             product_id: i.id,
-            quantity: i.quantity,
-            size: i.size,
+            quantity: i.quantity
           })),
         }),
       });
@@ -154,7 +153,7 @@ export default function Checkout() {
         <Button
           onClick={placeOrder}
           disabled={loading || cartItems.length === 0}
-          className="w-full h-12 rounded-none"
+          className="w-full h-12 rounded-none text-[#E8C985]"
         >
           {loading ? "Processing..." : "Place Order"}
         </Button>
@@ -173,15 +172,12 @@ export default function Checkout() {
               <div key={index} className="flex gap-3">
                 <Image
                   src={item.images[0]}
-                  alt={item.article}
+                  alt={item.title}
                   width={60}
                   height={60}
                 />
                 <div className="flex-1">
-                  <p>{item.article}</p>
-                  <p className="text-xs">
-                    Size {item.size} · Qty {item.quantity}
-                  </p>
+                  <p>{item.title}</p>
                 </div>
                 <p>{formatPrice(item.price * item.quantity * rate)}</p>
               </div>

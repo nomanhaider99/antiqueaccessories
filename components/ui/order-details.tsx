@@ -11,23 +11,6 @@ import { Separator } from "@/components/ui/separator";
 import Image from "next/image"; 
 import { useCurrency } from "@/store/currency-store";
 
-type Order = {
-  id: string;
-  customer_name: string;
-  phone: string;
-  city: string;
-  house_number?: string | null;
-  street_number?: string | null;
-  address: string;
-  subtotal: number;
-  shipping_fee: number;
-  total: number;
-  shipping_mode: "standard" | "express";
-  payment_mode: "cash" | "advance"; // Matches your PaymentMode type
-  status: "pending" | "accepted" | "completed" | "rejected";
-  createdAt: Date | string;
-};
-
 interface OrderDetailsSheetProps {
   orderId?: string | null;
   open?: boolean;

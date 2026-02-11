@@ -32,14 +32,14 @@ export default function ContactUs() {
         </h1>
         <p className="text-center text-sm text-muted-foreground mb-16">
           Please use the below form. You can also call customer service on
-          <span className="ml-1">+92 330 4765054.</span>
+          <span className="ml-1">+92 312 2745789.</span>
         </p>
 
         {/* Content */}
         <div className="grid md:grid-cols-2 gap-16 items-start">
           {/* Support Info */}
           <div>
-            <h2 className="text-lg tracking-widest mb-4">SUPORT CUSTOMER</h2>
+            <h2 className="text-lg tracking-widest mb-4">SUPPORT CUSTOMER</h2>
             <p className="text-sm text-muted-foreground mb-6 max-w-sm">
               Have a question? Please contact us using the customer support
               channels below.
@@ -48,15 +48,11 @@ export default function ContactUs() {
             <div className="space-y-3 text-sm">
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
-                <span>Phone: +92 330 4765054</span>
+                <span>Phone: +92 312 2745789</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <span>Email: qusoorpk@gmail.com</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4" />
-                <span>Opening hours: Everyday 10:00am – 7:00pm</span>
+                <span>Email: antiqueaccessories@gmail.com</span>
               </div>
             </div>
           </div>
@@ -127,7 +123,7 @@ export default function ContactUs() {
                     setError("Something went wrong. Please try again.");
                   }
                 }}
-                className="rounded-full px-10 py-6 bg-black text-white hover:bg-black/90"
+                className="rounded-full px-10 py-6 bg-black text-[#E8C985] hover:bg-black/90"
               >
                 {loading ? "Sending..." : "Send"}
               </Button>

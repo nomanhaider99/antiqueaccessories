@@ -117,11 +117,10 @@ export default function Products() {
         <TableHeader>
           <TableRow className="bg-muted/40">
             <TableHead>Product</TableHead>
-            <TableHead>Collection</TableHead>
+            <TableHead>Category</TableHead>
             <TableHead>Actual Price</TableHead>
             <TableHead>Discount</TableHead>
             <TableHead>Discounted Price</TableHead>
-            <TableHead>Size</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
@@ -132,15 +131,15 @@ export default function Products() {
             <TableRow key={product.id} className="hover:bg-muted/40">
               {/* Product */}
               <TableCell>
-                <div className="font-medium">{product.article}</div>
+                <div className="font-medium">{product.title}</div>
                 <div className="text-sm text-muted-foreground">
                   Updated on {new Date(product.createdAt).toDateString()}
                 </div>
               </TableCell>
 
-              {/* Collection */}
+              {/* category */}
               <TableCell className="font-medium">
-                {product.collection}
+                {product.category}
               </TableCell>
 
               {/* Price */}
@@ -156,11 +155,6 @@ export default function Products() {
               {/* Discounted */}
               <TableCell className="font-medium">
                 {formatPrice(product.discountedPrice)}
-              </TableCell>
-
-              {/* Size */}
-              <TableCell className="font-medium">
-                {product.size}
               </TableCell>
 
               {/* Status */}

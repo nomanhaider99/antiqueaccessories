@@ -20,8 +20,31 @@ import { Product } from "@/types";
 
 interface EditProductProps {
   productId: string | null;
-  onUpdated?: () => void; // callback after successful update
+  onUpdated?: () => void;
 }
+
+const categories = [
+  { label: "New Arrivals", value: "new-arrivals" },
+  { label: "Sale", value: "sale" },
+  { label: "Clothing", value: "clothing" },
+  { label: "Sets", value: "sets" },
+  { label: "Necklaces", value: "necklaces" },
+  { label: "Earings", value: "earings" },
+  { label: "Rings", value: "rings" },
+  { label: "Anklets", value: "anklets" },
+  { label: "Bangles – Bracelets", value: "bangles-bracelets" },
+  { label: "Nosecuffs", value: "nosecuffs" },
+  { label: "Matha Patti", value: "matha-patti" },
+  { label: "Hair Accessories", value: "hair-accessories" },
+  { label: "Clutches – Bags", value: "clutches-bags" },
+  { label: "Gift Items", value: "gift-items" },
+  { label: "Meena Bazar", value: "meena-bazar" },
+  { label: "Jhumkaaz", value: "jhumkaaz" },
+  { label: "Gems & Stones", value: "gems-stones" },
+  { label: "Jewellery Boxes", value: "jewellery-boxes" },
+  { label: "Toe Rings", value: "toe-rings" },
+];
+
 
 export default function EditProduct({ productId, onUpdated }: EditProductProps) {
   const [images, setImages] = useState<string[]>([]);
@@ -29,17 +52,14 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   const [form, setForm] = useState({
-    article: "",
-    collection: "",
+    title: "",
+    category: "",
     price: "",
     discountedPrice: "",
-    type: "",
     availability: "available",
     discount: "0",
-    sizes: [""],
     deliveryTimes: [""],
     description: "",
-    disclaimer: [""],
   });
 
   console.log('Product ID: ', productId);
@@ -54,17 +74,14 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
         const prod: Product = data.data;
 
         setForm({
-          article: prod.article,
-          collection: prod.collection,
+          title: prod.title,
+          category: prod.category,
           price: String(prod.price),
           discountedPrice: String(prod.discountedPrice),
-          type: prod.type,
           availability: prod.availability,
           discount: String(prod.discount),
-          sizes: prod.size?.split(",").map(s => s.trim()) || [""],
           deliveryTimes: prod.deliveryTime || [""],
           description: prod.description,
-          disclaimer: prod.disclaimer?.split("|").map(d => d.trim()) || [""],
         });
 
         setImages(prod.images || []);
@@ -101,29 +118,24 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
   const handleUpdate = async () => {
     const priceNum = Number(form.price);
     const discountNum = Number(form.discount);
-    const cleanSizes = form.sizes.filter(s => s.trim() !== "").join(", ");
     const cleanDelivery = form.deliveryTimes.filter(t => t.trim() !== "");
-    const cleanDisclaimer = form.disclaimer.filter(d => d.trim() !== "").join(" | ");
     const discountedPrice = Math.round(
       priceNum - (priceNum * discountNum) / 100
     );
 
     const payload = {
-      article: form.article,
-      collection: form.collection,
+      title: form.title,
+      category: form.category.toLowerCase(),
       price: priceNum,
-      type: form.type,
-      size: cleanSizes,
       availability: form.availability,
       description: form.description,
       discount: discountNum,
       discountedPrice: discountedPrice,
       deliveryTime: cleanDelivery,
       images,
-      disclaimer: cleanDisclaimer,
     };
 
-    if (!payload.article || !payload.type || !payload.size || images.length === 0) {
+    if (images.length === 0) {
       setMessage({ type: "error", text: "Please fill all required fields and add at least one image." });
       return;
     }
@@ -196,23 +208,28 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
         <div className="space-y-2">
           <Label>Product Name *</Label>
           <Input
-            value={form.article}
-            onChange={e => handleChange("article", e.target.value)}
+            value={form.title}
+            onChange={e => handleChange("title", e.target.value)}
           />
         </div>
 
         {/* Category + Collection */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label>Collection *</Label>
-            <Select value={form.collection} onValueChange={val => handleChange("collection", val)}>
+            <Label>Category *</Label>
+            <Select value={form.category} onValueChange={val => handleChange("category", val)}>
               <SelectTrigger><SelectValue placeholder="Select collection" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="new-arrivals">New Arrivals</SelectItem>
-                <SelectItem value="casuals">Casuals</SelectItem>
-                <SelectItem value="luxe-pret26">Luxe Pret 26’</SelectItem>
-                <SelectItem value="lune">Lune</SelectItem>
-                <SelectItem value="sale">Sale</SelectItem>
+                {
+                  categories.map((item, index) => (
+                    <SelectItem 
+                      value={item.value} 
+                      key={index} 
+                    >
+                      {item.label}
+                    </SelectItem>
+                  ))
+                }
               </SelectContent>
             </Select>
           </div>
@@ -220,18 +237,6 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
 
         {/* Type + Availability */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label>Type *</Label>
-            <Select value={form.type} onValueChange={val => handleChange("type", val)}>
-              <SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="stitched">Stitched</SelectItem>
-                <SelectItem value="unstitched">Unstitched</SelectItem>
-                <SelectItem value="both">Both</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
           <div className="space-y-2">
             <Label>Availability *</Label>
             <Select value={form.availability} onValueChange={val => handleChange("availability", val)}>
@@ -257,19 +262,6 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
           </div>
         </div>
 
-        {/* Dynamic arrays: Sizes */}
-        <div className="space-y-2">
-          <Label>Sizes *</Label>
-          {form.sizes.map((size, i) => (
-            <div key={i} className="flex gap-2 mb-1">
-              <Input value={size} onChange={e => handleArrayChange("sizes", i, e.target.value)} />
-              <Button variant="outline" size="sm" onClick={() => removeArrayField("sizes", i)}>
-                <Trash size={16} />
-              </Button>
-            </div>
-          ))}
-          <Button size="sm" onClick={() => addArrayField("sizes")}><Plus size={16} /> Add Size</Button>
-        </div>
 
         {/* Dynamic arrays: DeliveryTimes */}
         <div className="space-y-2">
@@ -289,20 +281,6 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
         <div className="space-y-2">
           <Label>Description *</Label>
           <Textarea value={form.description} onChange={e => handleChange("description", e.target.value)} />
-        </div>
-
-        {/* Disclaimer */}
-        <div className="space-y-2">
-          <Label>Disclaimer *</Label>
-          {form.disclaimer.map((disc, i) => (
-            <div key={i} className="flex gap-2 mb-1">
-              <Input value={disc} onChange={e => handleArrayChange("disclaimer", i, e.target.value)} />
-              <Button variant="outline" size="sm" onClick={() => removeArrayField("disclaimer", i)}>
-                <Trash size={16} />
-              </Button>
-            </div>
-          ))}
-          <Button size="sm" onClick={() => addArrayField("disclaimer")}><Plus size={16} /> Add Disclaimer</Button>
         </div>
 
         {message && (

@@ -8,22 +8,22 @@ import Link from "next/link"
 
 const Footer = () => {
   return (
-    <footer className="bg-[#6e232a] text-white px-14 pt-20 pb-10 w-full" id="footer">
+    <footer className="bg-zinc-950 text-white px-14 pt-20 pb-10 w-full" id="footer">
       {/* Top section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
         {/* Newsletter */}
         <div>
-          <h4 className="text-xs tracking-[0.3em] uppercase mb-6">
+          <h4 className="text-xs tracking-[0.3em] uppercase mb-6 text-[#E8C985]">
             ABOUT US
           </h4>
           <p className="text-sm mb-8 text-white/80 max-w-sm">
-            We only carry designs we believe in ethically and aesthetically – original, authentic pieces that are made to last.
+            We are wholesaler of authentic Afghani and tribal antique jewelry with unique designs.
           </p>
         </div>
 
         {/* Quick Links */}
         <div>
-          <h4 className="text-xs tracking-[0.3em] uppercase mb-6">
+          <h4 className="text-xs tracking-[0.3em] uppercase mb-6 text-[#E8C985]">
             Quick Links
           </h4>
           <ul className="space-y-4 text-sm text-white/85">
@@ -34,19 +34,13 @@ const Footer = () => {
               <Link href="/#aboutus">About Us</Link>
             </li>
             <li>
-              <Link href="/collections/new-arrivals">New Arrivals</Link>
+              <Link href="/category/new-arrivals">New Arrivals</Link>
             </li>
             <li>
-              <Link href="/collections/casuals">Casuals</Link>
+              <Link href="/category/sale">Sale</Link>
             </li>
             <li>
-              <Link href="/collections/luxe-pret26">Luxe Pret 26’</Link>
-            </li>
-            <li>
-              <Link href="/collections/lune">Lune</Link>
-            </li>
-            <li>
-              <Link href="/collections/sale">Sale</Link>
+              <Link href="/faqs">FAQs</Link>
             </li>
             <li>
               <Link href="/contactus">Contact Us</Link>
@@ -57,20 +51,11 @@ const Footer = () => {
 
         {/* Get in touch */}
         <div>
-          <h4 className="text-xs tracking-[0.3em] uppercase mb-6">
+          <h4 className="text-xs tracking-[0.3em] uppercase mb-6 text-[#E8C985]">
             Get in Touch
           </h4>
 
           <div className="space-y-6 text-sm">
-            <p>
-              <span className="font-medium">Email:</span>{" "}
-              <a
-                href="mailto:saadbinshahzadpk@gmail.com"
-                className="underline underline-offset-4"
-              >
-                qusoorpk@gmail.com
-              </a>
-            </p>
 
             <p>
               <span className="font-medium">Phone:</span>{" "}
@@ -78,7 +63,7 @@ const Footer = () => {
                 href="tel:+923304765054"
                 className="underline underline-offset-4"
               >
-                +92 330 4765054
+                +92 312 2745789
               </a>
             </p>
           </div>
@@ -87,22 +72,17 @@ const Footer = () => {
 
       {/* Social icons */}
       <div className="flex gap-6 mt-20">
-        <a target="_blank" href="https://www.facebook.com/profile.php?id=61566377709002&mibextid=wwXIfr&rdid=rGxzzptzPji7607v&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1883NZ5E7q%2F%3Fmibextid%3DwwXIfr#"><Facebook className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" /></a>
-        <a target="_blank" href="https://www.instagram.com/qusoorpk"><Instagram className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" /></a>
-        <Mail className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" />
+        <a target="_blank" href="https://www.facebook.com/profile.php?id=100078955689437"><Facebook className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" /></a>
+        <a target="_blank" href="https://www.instagram.com/antique_accesssories/"><Instagram className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" /></a>
         <a target="_blank" href="https://api.whatsapp.com/send/?phone=923304765054&text&type=phone_number&app_absent=0"><Phone className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" /></a>
       </div>
 
       {/* Bottom bar */}
       <div className="mt-10 border-t border-white/20 pt-6 text-xs tracking-[0.25em] uppercase text-white/70">
-        © 2026 — QUSOORPK · Developed by{" "}
-        <a target="_blank" href="https://www.linkedin.com/in/nomanhaider99/" className="underline underline-offset-4 cursor-pointer">
-          Noman
+        © 2026 — <span className="text-[#E8C985]">ANTIQUE ACCESSORIES</span> · Developed by{" "}
+        <a target="_blank" href="https://www.linkedin.com/in/nomanhaider99/" className="underline underline-offset-4 cursor-pointer text-[#E8C985]">
+          Noman Haider
         </a>{" "}
-        &{" "}
-        <a href="https://www.linkedin.com/in/zain-ul-abideen369/" target="_blank" className="underline underline-offset-4 cursor-pointer">
-          Zain
-        </a>
       </div>
     </footer>
   )

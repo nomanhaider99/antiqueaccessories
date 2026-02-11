@@ -12,9 +12,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Missing credentials" }, { status: 400 });
   }
 
-  const admin = await db.query.admins.findFirst({
-    where: eq(admins.username, username),
-  });
+  const admin = await db
+    .select()
+    .from(admins)
+    .where(eq(admins.username, username))
+    .limit(1)
+    .then(res => res[0]);
 
   if (!admin) {
     return NextResponse.json({ message: "Invalid credentials" }, { status: 401 });

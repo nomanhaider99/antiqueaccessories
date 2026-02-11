@@ -181,7 +181,7 @@ export default function Orders() {
 
               {/* Order ID */}
               <TableCell>
-                {order.shipping_mode === "express" ? (
+                {order.shipping_mode !== "standard" ? (
                   <div className="inline-flex items-center gap-2 rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700">
                     <Zap className="h-3.5 w-3.5" />
                     Express Shipping

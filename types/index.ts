@@ -1,28 +1,33 @@
-export type ProductType = "stitched" | "unstitched" | "both"
+// ================= ENUM TYPES =================
+
+export type OrderStatus = "pending" | "accepted" | "completed" | "rejected"
+
+export type ShippingMode = "standard"
+
+export type PaymentMode = "cash" | "advance"
+
 export type ProductAvailability = "available" | "sold-out"
+
+
+// ================= PRODUCT =================
 
 export interface Product {
   id: string
-  article: string
+  title: string
   category: string
-  collection: string
   price: number
-  discountedPrice: number
-  discount: number
-  type: ProductType
-  size: string
   availability: ProductAvailability
   description: string
+  discount: number
+  discountedPrice: number
   deliveryTime: string[]
   images: string[]
-  disclaimer: string
   createdAt: string
+  updatedAt: string
 }
 
 
-export type OrderStatus = 'pending' | 'accepted' | 'completed' | 'rejected'
-export type ShippingMode = 'standard' | 'express'
-export type PaymentMode = 'cash' | 'advance'
+// ================= ORDER =================
 
 export interface Order {
   id: string
@@ -39,6 +44,30 @@ export interface Order {
   shipping_fee: number
   total: number
   status: OrderStatus
-  createdAt: Date
-  updatedAt: Date
+  currency: string        // e.g. "PKR"
+  exchange_rate: number
+  createdAt: string
+  updatedAt: string
+}
+
+
+// ================= ORDER ITEM =================
+
+export interface OrderItem {
+  id: string
+  order_id: string
+  product_id: string
+  quantity: number
+  price: number
+}
+
+
+// ================= ADMIN =================
+
+export interface Admin {
+  id: string
+  username: string
+  password_hash: string
+  createdAt: string
+  updatedAt: string
 }

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Sale() {
-  const collection = "sale";
+  const category = "sale";
   const [data, setData] = useState<Product[]>([]);
   const { currency, rate } = useCurrency();
 
@@ -15,7 +15,7 @@ export default function Sale() {
     `${currency} ${(rate * value).toFixed(2)}`;
 
   useEffect(() => {
-    fetch(`/api/products?collection=${collection}`)
+    fetch(`/api/products?category=${category}`)
       .then(res => res.json())
       .then(setData);
   }, []);
@@ -23,7 +23,7 @@ export default function Sale() {
   return (
     <section className="w-full mx-auto px-6 md:py-16 py-6 space-y-5">
       <h1 className="md:text-[2.5rem] text-center text-[1.5rem] font-light">
-        {collection
+        {category
           .split("-")
           .map(w => w.charAt(0).toUpperCase() + w.slice(1))
           .join(" ")}
@@ -57,7 +57,7 @@ export default function Sale() {
 
                 <Image
                   src={product.images[0]}
-                  alt={product.article}
+                  alt={product.title}
                   width={600}
                   height={800}
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -70,10 +70,9 @@ export default function Sale() {
                 )}
               </div>
 
-              {/* TEXT */}
               <div className="mt-6 text-center space-y-2">
                 <p className="text-[15px] tracking-[0.3em] uppercase font-medium">
-                  {product.article}
+                  {product.title}
                 </p>
                 <p className="text-base font-semibold">
                   {formatPrice(product.discountedPrice || product.price)}

@@ -6,7 +6,7 @@ import {
   uuid,
   integer,
   timestamp,
-  varchar,
+  varchar,  
 } from "drizzle-orm/pg-core";
 import { pgEnum } from "drizzle-orm/pg-core";
 
@@ -62,36 +62,23 @@ export const orders = pgTable("orders", {
     .notNull(),
 });
 
-export const productTypeEnum = pgEnum("product_type", [
-  "stitched",
-  "unstitched",
-  "both"
-]);
-
 export const productAvailabilityEnum = pgEnum("product_availability", [
   "available",
   "sold-out",
 ]);
 
-/* Products */
 export const products = pgTable("products", {
   id: uuid("id")
     .defaultRandom()
     .primaryKey(),
 
-  article: varchar("article", { length: 120 })
+  title: varchar("title", { length: 120 })
     .notNull(),
 
-  collection: varchar("collection", { length: 120 })
+  category: varchar("category", { length: 120 })
     .notNull(),
 
   price: real("price")
-    .notNull(),
-
-  type: productTypeEnum("type")
-    .notNull(),
-
-  size: text("size")
     .notNull(),
 
   availability: productAvailabilityEnum("availability")
@@ -116,9 +103,6 @@ export const products = pgTable("products", {
     .$type<string[]>()
     .notNull(),
 
-  disclaimer: text("disclaimer")
-    .notNull(),
-
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -140,9 +124,6 @@ export const orderItems = pgTable("order_items", {
   product_id: uuid("product_id")
     .notNull()
     .references(() => products.id, { onDelete: "cascade" }),
-
-  size: text("size")
-    .notNull(),
 
   quantity: integer("quantity")
     .notNull()

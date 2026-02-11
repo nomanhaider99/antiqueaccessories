@@ -57,32 +57,28 @@ export default function Cart() {
             </p>
           )}
 
-          {cartItems.map((item) => (
+          {cartItems.map((item, index) => (
             <div
-              key={`${item.id}-${item.size}`}
+              key={`${index}`}
               className="flex gap-4"
             >
               <Image
                 src={item.images[0]}
-                alt={item.article}
+                alt={item.title}
                 width={80}
                 height={100}
                 className="rounded-md object-cover"
               />
 
               <div className="flex-1">
-                <p className="text-sm font-medium">{item.article}</p>
-                <p className="text-xs text-muted-foreground">
-                  · Size {item.size}
-                </p>
-
+                <p className="text-sm font-medium">{item.title}</p>
                 <div className="flex items-center justify-between mt-2">
                   {/* Quantity */}
                   <div className="flex items-center border rounded-md">
                     <button
                       className="p-1"
                       onClick={() => {
-                        updateQuantity(item.id, item.size, item.quantity - 1);
+                        updateQuantity(item.id, item.quantity - 1);
                         refresh();
                       }}
                     >
@@ -96,7 +92,7 @@ export default function Cart() {
                     <button
                       className="p-1"
                       onClick={() => {
-                        updateQuantity(item.id, item.size, item.quantity + 1);
+                        updateQuantity(item.id, item.quantity + 1);
                         refresh();
                       }}
                     >
@@ -114,7 +110,7 @@ export default function Cart() {
               {/* Remove */}
               <button
                 onClick={() => {
-                  removeFromCart(item.id, item.size);
+                  removeFromCart(item.id);
                   refresh();
                 }}
                 className="text-muted-foreground hover:text-black"
@@ -137,7 +133,7 @@ export default function Cart() {
 
             <SheetClose asChild>
               <Link href="/checkout">
-                <Button className="w-full h-12 text-base">
+                <Button className="w-full h-12 text-base text-[#E8C985]">
                   Proceed to Checkout
                 </Button>
               </Link>

@@ -10,7 +10,6 @@ export async function GET(
   const { id } = await ctx.params;
 
   try {
-    // 1. Get order
     const order = await db
       .select()
       .from(orders)
@@ -23,8 +22,7 @@ export async function GET(
         { status: 404 }
       );
     }
-
-    // 2. Get order items with full product details
+    
     const items = await db
       .select({
         orderItemId: orderItems.id,
@@ -33,17 +31,14 @@ export async function GET(
 
         product: {
           id: products.id,
-          article: products.article,
-          collection: products.collection,
+          title: products.title,
+          category: products.category,
           price: products.price,
           discountedPrice: products.discountedPrice,
-          type: products.type,
-          size: products.size,
           availability: products.availability,
           description: products.description,
           deliveryTime: products.deliveryTime,
-          images: products.images,
-          disclaimer: products.disclaimer,
+          images: products.images
         },
       })
       .from(orderItems)

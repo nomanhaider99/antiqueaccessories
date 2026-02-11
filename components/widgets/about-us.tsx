@@ -10,7 +10,7 @@ export default function AboutSection() {
           {/* LEFT — IMAGE */}
           <div className="relative w-full aspect-[3/4] overflow-hidden bg-zinc-100">
             <Image
-              src="/images/about.webp" // replace
+              src="/images/logo.jpeg"
               alt="Craftsmanship"
               fill
               className="object-cover"
@@ -21,7 +21,7 @@ export default function AboutSection() {
           {/* RIGHT — TEXT */}
           <div className="space-y-6 w-full">
             <p className="text-xs tracking-[0.35em] uppercase text-zinc-500">
-              About QusoorPk
+              About Antique Accessories
             </p>
 
             {/* Adjusted heading size slightly for mobile responsiveness */}
@@ -31,17 +31,11 @@ export default function AboutSection() {
             </h2>
 
             <p className="text-sm leading-7 text-zinc-600">
-              The journey of Qusoor is that of an Eclectic Wanderer —
-              a soul navigating through a world of elegance and opulence.
-              His work draws inspiration from ancient crafts, timeless
-              artifacts, and majestic architecture, brought to life through
-              meticulous handcrafting on rare and vintage textiles.
+              Welcome to <strong>Antique Accessories</strong> by <b>Shahzad Hassan</b>! We are THE one stop shop for Antique, Afghan, Vintage Tribal, Boho Jewellery and a wide selection of accessories to fit any taste and style. Afghan Accessories is now at a stage where we want to provide extraordinary and handmade Jewellery to different parts of the world. Our product quality and customer service are the pride of our identity, we seek to give you a pleasant and easy online shopping experience. our tribal items are loved and statement pieces for everything from party functions to traditional weddings.our product use artificial stones, Gemstones, brass , Gilit, mirrors, and who can forget German silver!
             </p>
 
             <p className="text-sm leading-7 text-zinc-600">
-              Each creation is a tribute to heritage, reimagined with artistic
-              flair and soulful expression — celebrating craftsmanship that
-              transcends time.
+              Additionally, we can give on customer request, custom designs creation of our valuable clients.These custom pieces are high quality handmade pieces that we are sure will meet your level of quality and necessity.
             </p>
           </div>
 

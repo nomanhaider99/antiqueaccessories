@@ -47,9 +47,8 @@ export default async function ProductPage({
             id: orderItems.id,
             quantity: orderItems.quantity,
             price: orderItems.price,
-            size: orderItems.size,
-            article: products.article,
             images: products.images,
+            title: products.title
         })
         .from(orderItems)
         .innerJoin(products, eq(orderItems.product_id, products.id))

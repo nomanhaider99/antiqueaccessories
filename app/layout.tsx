@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
-import { customfont } from "./font";
 import { CartProvider } from "@/lib/cart-context";
 import { Toaster } from "sonner";
 import CurrencySwitcher from "@/components/ui/currency-switcher";
@@ -9,8 +8,8 @@ import CurrencySwitcher from "@/components/ui/currency-switcher";
 const dm_sans = DM_Sans({ subsets: ["latin"], weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900", "1000"] })
 
 export const metadata: Metadata = {
-  title: "Qusoor",
-  description: "The journey of QusoorPK is that of an Eclectic Wanderer — a soul navigating through a world of elegance and opulence. His work draws inspiration from ancient crafts, timeless artifacts, and majestic architecture, brought to life through meticulous handcrafting on rare and vintage textiles.",
+  title: "Antique Accessories",
+  description: "Welcome to Antique Accessories by Shahzad Hassan! We are THE one stop shop for Antique, Afghan, Vintage Tribal, Boho Jewellery and a wide selection of accessories to fit any taste and style. Afghan Accessories is now at a stage where we want to provide extraordinary and handmade Jewellery to different parts of the world. Our product quality and customer service are the pride of our identity, we seek to give you a pleasant and easy online shopping experience. our tribal items are loved and statement pieces for everything from party functions to traditional weddings.our product use artificial stones, Gemstones, brass , Gilit, mirrors, and who can forget German silver!",
 };
 
 export default function RootLayout({

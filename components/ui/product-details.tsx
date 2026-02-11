@@ -10,24 +10,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { useCurrency } from "@/store/currency-store";
-
-type Product = {
-  id: string;
-  article: string;
-  category: string;
-  collection: string;
-  price: number;
-  discountedPrice: number;
-  discount: number;
-  type: "stitched" | "unstitched" | "both";
-  size: string;
-  availability: "available" | "sold-out";
-  description: string;
-  deliveryTime: string[];
-  images: string[];
-  disclaimer: string;
-  createdAt: string | Date;
-};
+import { Product } from "@/types";
 
 interface ProductDetailsSheetProps {
   productId: string | null;
@@ -93,7 +76,7 @@ export default function ProductDetails({
               >
                 <Image
                   src={img}
-                  alt={product.article}
+                  alt={product.title}
                   fill
                   className="object-cover"
                 />
@@ -113,10 +96,8 @@ export default function ProductDetails({
             <div className="flex flex-col">
               {/* Meta */}
               <div className="p-6 flex flex-col gap-4">
-                <DetailRow label="Article" value={product.article} />
-                <DetailRow label="Collection" value={product.collection} />
-                <DetailRow label="Type" value={product.type} />
-                <DetailRow label="Size" value={product.size} />
+                <DetailRow label="Article" value={product.title} />
+                <DetailRow label="Category" value={product.category} />
                 <DetailRow
                   label="Availability"
                   value={
@@ -167,10 +148,6 @@ export default function ProductDetails({
                 <DetailRow
                   label="Description"
                   value={product.description}
-                />
-                <DetailRow
-                  label="Disclaimer"
-                  value={product.disclaimer}
                 />
               </div>
             </div>

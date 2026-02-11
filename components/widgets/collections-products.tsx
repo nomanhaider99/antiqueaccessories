@@ -1,20 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCurrency } from "@/store/currency-store";
+import { Product } from "@/types";
 
-type Product = {
-  id: string;
-  article: string;
-  price: number;
-  discountedPrice: number;
-  images: string[];
-  availability: "available" | "sold-out";
-};
-
-export default function CollectionProducts({ products, loading, collection }: { products: Product[]; loading: boolean, collection: string }) {
+export default function CollectionProducts({ products, loading, category }: { products: Product[]; loading: boolean, category: string }) {
 
   const { currency, rate } = useCurrency();
 
@@ -33,7 +24,7 @@ export default function CollectionProducts({ products, loading, collection }: { 
     <section className="w-full mx-auto px-6 md:py-16 py-4 space-y-5">
       <h1 className="md:text-[2.5rem] text-[1.5rem] font-light">
         Our{" "}
-        {collection
+        {category
           .split("-")
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(" ")}
@@ -70,7 +61,7 @@ export default function CollectionProducts({ products, loading, collection }: { 
 
                 <Image
                   src={product.images[0]}
-                  alt={product.article}
+                  alt={product.title}
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   width={400}
                   height={600}
@@ -84,10 +75,9 @@ export default function CollectionProducts({ products, loading, collection }: { 
                 )}
               </div>
 
-              {/* TEXT */}
               <div className="mt-4 text-center space-y-1">
                 <p className="text-[13px] tracking-[0.25em] uppercase">
-                  {product.article}
+                  {product.title}
                 </p>
 
                 <p className="text-sm">

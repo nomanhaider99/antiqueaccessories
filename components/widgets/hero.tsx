@@ -2,20 +2,21 @@ import Image from "next/image"
 
 const Hero = () => {
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-screen flex justify-center">
       <Image
-        src="/images/Hero.png"
+        src="/images/HeroDesktop.jpg"
         alt="Hero"
-        fill
+        width={1450}
+        height={600}
         priority
         className="object-cover sm:block hidden"
       />
       <Image
-        src="/images/HeroMobile.png"
+        src="/images/Hero.jpg"
         alt="Hero"
         fill
         priority
-        className="object-cover block sm:hidden"
+        className="object-cover block md:hidden"
       />
     </div>
   )

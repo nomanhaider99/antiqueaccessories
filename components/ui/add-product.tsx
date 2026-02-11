@@ -17,77 +17,99 @@ import { Card } from "@/components/ui/card";
 import { Plus, Trash } from "lucide-react";
 import { UploadButton } from "@/utils/uploadthing";
 
+const categories = [
+  { label: "New Arrivals", value: "new-arrivals" },
+  { label: "Sale", value: "sale" },
+  { label: "Clothing", value: "clothing" },
+  { label: "Sets", value: "sets" },
+  { label: "Necklaces", value: "necklaces" },
+  { label: "Earings", value: "earings" },
+  { label: "Rings", value: "rings" },
+  { label: "Anklets", value: "anklets" },
+  { label: "Bangles – Bracelets", value: "bangles-bracelets" },
+  { label: "Nosecuffs", value: "nosecuffs" },
+  { label: "Matha Patti", value: "matha-patti" },
+  { label: "Hair Accessories", value: "hair-accessories" },
+  { label: "Clutches – Bags", value: "clutches-bags" },
+  { label: "Gift Items", value: "gift-items" },
+  { label: "Meena Bazar", value: "meena-bazar" },
+  { label: "Jhumkaaz", value: "jhumkaaz" },
+  { label: "Gems & Stones", value: "gems-stones" },
+  { label: "Jewellery Boxes", value: "jewellery-boxes" },
+  { label: "Toe Rings", value: "toe-rings" },
+];
+
+interface DeliveryTime {
+  id: string;
+  value: string;
+}
+
 export default function AddProduct() {
   const [images, setImages] = React.useState<string[]>([]);
   const [form, setForm] = React.useState({
-    article: "",
-    collection: "",
+    title: "",
+    category: "",
     price: "",
     discountedPrice: "",
-    type: "",
     availability: "available",
     discount: "0",
-    sizes: [""],
-    deliveryTimes: [""],
+    deliveryTimes: [] as DeliveryTime[],
     description: "",
-    disclaimer: [""]
   });
 
+  const [loading, setLoading] = React.useState(false);
+  const [message, setMessage] = React.useState<{ type: "success" | "error"; text: string } | null>(null);
 
   const handleChange = (key: string, value: any) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleArrayChange = (key: string, index: number, value: string) => {
-    const arr = [...(form as any)[key]];
-    arr[index] = value;
-    handleChange(key, arr);
+  const handleArrayChange = (id: string, value: string) => {
+    const updated = form.deliveryTimes.map((item) =>
+      item.id === id ? { ...item, value } : item
+    );
+    handleChange("deliveryTimes", updated);
   };
 
-  const addArrayField = (key: string) => {
-    handleChange(key, [...(form as any)[key], ""]);
+  const addArrayField = () => {
+    const newField: DeliveryTime = { id: crypto.randomUUID(), value: "" };
+    handleChange("deliveryTimes", [...form.deliveryTimes, newField]);
   };
 
-  const removeArrayField = (key: string, index: number) => {
-    const arr = [...(form as any)[key]];
-    arr.splice(index, 1);
-    handleChange(key, arr);
+  const removeArrayField = (id: string) => {
+    handleChange(
+      "deliveryTimes",
+      form.deliveryTimes.filter((item) => item.id !== id)
+    );
   };
-
-  const [loading, setLoading] = React.useState(false);
-  const [message, setMessage] = React.useState<{ type: "success" | "error"; text: string } | null>(null);
 
   const handleSave = async () => {
     const priceNum = Number(form.price);
     const discountNum = Number(form.discount);
 
-    // Filter empty strings from arrays to prevent "size": "S, , L"
-    const cleanSizes = form.sizes.filter(s => s.trim() !== "").join(", ");
-    const cleanDelivery = form.deliveryTimes.filter(t => t.trim() !== "");
-    const cleanDisclaimer = form.disclaimer.filter(d => d.trim() !== "").join(" | ");
+    const cleanDelivery = form.deliveryTimes
+      .map((d) => d.value)
+      .filter((v) => v.trim() !== "");
 
-    const discountedPrice = Math.round(
-      priceNum - (priceNum * discountNum) / 100
-    );
-
+    const discountedPrice = Math.round(priceNum - (priceNum * discountNum) / 100);
 
     const payload = {
-      article: form.article,
-      collection: form.collection,
+      title: form.title,
+      category: form.category.toLowerCase(),
       price: priceNum,
-      type: form.type,
-      size: cleanSizes,
       availability: form.availability,
       description: form.description,
       discount: discountNum,
       discountedPrice: discountedPrice,
       deliveryTime: cleanDelivery,
       images: images,
-      disclaimer: cleanDisclaimer,
     };
 
-    if (!payload.article || !payload.type || !payload.size) {
-      setMessage({ type: "error", text: "Please fill all required fields and add at least one image." });
+    if (!payload.title) {
+      setMessage({
+        type: "error",
+        text: "Please fill all required fields and add at least one image.",
+      });
       return;
     }
 
@@ -98,7 +120,6 @@ export default function AddProduct() {
       });
       return;
     }
-
 
     setLoading(true);
     setMessage(null);
@@ -118,22 +139,17 @@ export default function AddProduct() {
 
       setMessage({ type: "success", text: "Product saved successfully!" });
 
-      // Reset form
       setForm({
-        article: "",
-        collection: "",
+        title: "",
+        category: "",
         price: "",
         discountedPrice: "",
-        type: "",
         availability: "available",
         discount: "0",
-        sizes: [""],
-        deliveryTimes: [""],
+        deliveryTimes: [],
         description: "",
-        disclaimer: [""],
       });
       setImages([]);
-
     } catch (error) {
       setMessage({ type: "error", text: String(error) });
     } finally {
@@ -149,25 +165,14 @@ export default function AddProduct() {
         <Card className="p-4 space-y-3">
           <Label className="block">Product Images *</Label>
 
-          {/* Image Preview Grid */}
           <div className="grid grid-cols-2 gap-3">
-            {images.map((img, i) => (
-              <div
-                key={i}
-                className="relative aspect-square rounded-md overflow-hidden border"
-              >
-                <Image
-                  src={img}
-                  alt="product"
-                  fill
-                  className="object-cover"
-                />
+            {images.map((img) => (
+              <div key={img} className="relative aspect-square rounded-md overflow-hidden border">
+                <Image src={img} alt="product" fill className="object-cover" />
                 <button
                   type="button"
                   className="absolute top-1 right-1 bg-white rounded-full p-1 shadow"
-                  onClick={() =>
-                    setImages((prev) => prev.filter((_, idx) => idx !== i))
-                  }
+                  onClick={() => setImages((prev) => prev.filter((i) => i !== img))}
                 >
                   <Trash size={14} />
                 </button>
@@ -175,7 +180,6 @@ export default function AddProduct() {
             ))}
           </div>
 
-          {/* Upload Button */}
           <UploadButton
             endpoint="imageUploader"
             onClientUploadComplete={(res) => {
@@ -186,12 +190,10 @@ export default function AddProduct() {
               setMessage({ type: "error", text: error.message });
             }}
             appearance={{
-              button:
-                "w-full bg-primary text-white hover:bg-primary/90",
+              button: "w-full bg-primary text-white hover:bg-primary/90",
             }}
           />
         </Card>
-
       </div>
 
       {/* RIGHT COLUMN */}
@@ -205,53 +207,36 @@ export default function AddProduct() {
         <div className="space-y-2">
           <Label>Product Name *</Label>
           <Input
-            value={form.article}
-            onChange={(e) => handleChange("article", e.target.value)}
+            value={form.title}
+            onChange={(e) => handleChange("title", e.target.value)}
             placeholder="e.g. Premium Lawn Suit"
           />
         </div>
 
-        {/* Category + Collection */}
+        {/* Category */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2 w-full">
-            <Label>Collection *</Label>
+            <Label>Category *</Label>
             <Select
-              value={form.collection}
-              onValueChange={(val) => handleChange("collection", val)}
+              value={form.category}
+              onValueChange={(val) => handleChange("category", val)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select collection" className="w-full" />
+                <SelectValue placeholder="Select category" className="w-full" />
               </SelectTrigger>
               <SelectContent className="w-full">
-                <SelectItem value="new-arrivals">New Arrivals</SelectItem>
-                <SelectItem value="casuals">Casuals</SelectItem>
-                <SelectItem value="luxe-pret26">Luxe Pret 26’</SelectItem>
-                <SelectItem value="lune">Lune</SelectItem>
-                <SelectItem value="sale">Sale</SelectItem>
+                {categories.map((item) => (
+                  <SelectItem key={item.value} value={item.label.toLowerCase()}>
+                    {item.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
         </div>
 
-        {/* Type + Availability */}
+        {/* Availability */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label>Product Type *</Label>
-            <Select
-              value={form.type}
-              onValueChange={(val) => handleChange("type", val)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="stitched">Stitched</SelectItem>
-                <SelectItem value="unstitched">Unstitched</SelectItem>
-                <SelectItem value="both">Both</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
           <div className="space-y-2">
             <Label>Availability *</Label>
             <Select
@@ -269,7 +254,7 @@ export default function AddProduct() {
           </div>
         </div>
 
-        {/* Price + Discount + Discounted Price */}
+        {/* Price + Discount */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label>Price *</Label>
@@ -290,62 +275,31 @@ export default function AddProduct() {
               onChange={(e) => handleChange("discount", e.target.value)}
             />
           </div>
-
-        </div>
-
-        {/* Dynamic Sizes */}
-        <div className="space-y-2">
-          <Label>Sizes *</Label>
-          {form.sizes.map((size, i) => (
-            <div key={i} className="flex gap-2 mb-1">
-              <Input
-                value={size}
-                onChange={(e) => handleArrayChange("sizes", i, e.target.value)}
-                placeholder="e.g. S, M, L, XL"
-              />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => removeArrayField("sizes", i)}
-              >
-                <Trash size={16} />
-              </Button>
-            </div>
-          ))}
-          <Button size="sm" onClick={() => addArrayField("sizes")}>
-            <Plus size={16} /> Add Size
-          </Button>
         </div>
 
         {/* Dynamic Delivery Time */}
         <div className="space-y-2">
           <Label>Delivery Times *</Label>
-          {form.deliveryTimes.map((time, i) => (
-            <div key={i} className="flex gap-2 mb-1">
+          {form.deliveryTimes.map((time) => (
+            <div key={time.id} className="flex gap-2 mb-1">
               <Input
-                value={time}
-                onChange={(e) =>
-                  handleArrayChange("deliveryTimes", i, e.target.value)
-                }
+                value={time.value}
+                onChange={(e) => handleArrayChange(time.id, e.target.value)}
                 placeholder="e.g: X-Y days Citywide/Nationwide/International"
               />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => removeArrayField("deliveryTimes", i)}
-              >
+              <Button variant="outline" size="sm" onClick={() => removeArrayField(time.id)}>
                 <Trash size={16} />
               </Button>
             </div>
           ))}
-          <Button size="sm" onClick={() => addArrayField("deliveryTimes")}>
+          <Button size="sm" onClick={addArrayField}>
             <Plus size={16} /> Add Delivery Time
           </Button>
         </div>
 
-        {/* Dynamic Description */}
+        {/* Description */}
         <div className="space-y-2">
-          <Label>Description  *</Label>
+          <Label>Description *</Label>
           <Textarea
             className="min-h-[100px]"
             value={form.description}
@@ -354,34 +308,12 @@ export default function AddProduct() {
           />
         </div>
 
-        {/* Dynamic Disclaimer */}
-        <div className="space-y-2">
-          <Label>Disclaimer *</Label>
-          {form.disclaimer.map((disc, i) => (
-            <div key={i} className="flex gap-2 mb-1">
-              <Input
-                value={disc}
-                onChange={(e) => handleArrayChange("disclaimer", i, e.target.value)}
-                placeholder="Enter disclaimer"
-              />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => removeArrayField("disclaimer", i)}
-              >
-                <Trash size={16} />
-              </Button>
-            </div>
-          ))}
-          <Button size="sm" onClick={() => addArrayField("disclaimer")}>
-            <Plus size={16} /> Add Disclaimer
-          </Button>
-        </div>
-
+        {/* Message */}
         {message && (
           <div
-            className={`p-2 rounded ${message.type === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-              }`}
+            className={`p-2 rounded ${
+              message.type === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+            }`}
           >
             {message.text}
           </div>
@@ -393,7 +325,6 @@ export default function AddProduct() {
             {loading ? "Saving..." : "Save Product"}
           </Button>
         </div>
-
       </Card>
     </div>
   );
