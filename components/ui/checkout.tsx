@@ -51,6 +51,10 @@ export default function Checkout() {
 
   const placeOrder = async () => {
     if (cartItems.length === 0) return;
+    if (!form.address || !form.city || !form.country || !form.customer_name || !form.street_number) {
+      toast.error("Please fill the required fields!");
+      return;
+    }
 
     setLoading(true);
 

@@ -129,7 +129,7 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
             <button
               disabled={product.availability === "sold-out"}
               onClick={handleAddToCart}
-              className="w-full bg-black text-[#E8C985] py-4 uppercase disabled:bg-gray-300"
+              className={`w-full bg-black  py-4 uppercase disabled:bg-gray-300 ${product.availability == 'sold-out' ? 'text-white' : 'text-[#E8C985]'}`}
             >
               Add to Cart
             </button>

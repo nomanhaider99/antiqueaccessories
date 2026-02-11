@@ -11,35 +11,32 @@ export default function Sale() {
   const [data, setData] = useState<Product[]>([]);
   const { currency, rate } = useCurrency();
 
-  const formatPrice = (value: number) =>
-    `${currency} ${(rate * value).toFixed(2)}`;
-
   useEffect(() => {
     fetch(`/api/products?category=${category}`)
       .then(res => res.json())
       .then(setData);
   }, []);
 
+  const formatCategory = (value: string) =>
+    value
+      .split("-")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+  const displayPrice = (value: number) =>
+    `${currency} ${(rate * value).toFixed(2)}`;
+
   return (
-    <section className="w-full mx-auto px-6 md:py-16 py-6 space-y-5">
-      <h1 className="md:text-[2.5rem] text-center text-[1.5rem] font-light">
-        {category
-          .split("-")
-          .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-          .join(" ")}
+    <section className="max-w-7xl mx-auto px-6 py-10">
+      <h1 className="text-2xl md:text-4xl font-light mb-10">
+        On Sale
       </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
         {data.map((product) => {
           const hasDiscount =
-            product.discountedPrice > 0 &&
+            product.discountedPrice &&
             product.discountedPrice < product.price;
-
-          const discountPercent = hasDiscount
-            ? Math.round(
-                ((product.price - product.discountedPrice) / product.price) * 100
-              )
-            : 0;
 
           return (
             <Link
@@ -47,36 +44,50 @@ export default function Sale() {
               href={`/products/${product.id}`}
               className="group"
             >
-              {/* IMAGE */}
-              <div className="relative w-full aspect-[2/3] overflow-hidden flex justify-center">
+              <div className="relative bg-white">
+                {/* SALE BADGE */}
                 {hasDiscount && (
-                  <span className="absolute top-3 left-3 z-10 bg-green-700 text-white text-[11px] font-semibold px-3 py-1 tracking-wider uppercase">
-                    {discountPercent}% OFF
+                  <span className="absolute top-3 left-3 z-10 bg-black text-white text-xs px-3 py-1 rounded-full">
+                    {formatCategory(product.category)}
                   </span>
                 )}
 
-                <Image
-                  src={product.images[0]}
-                  alt={product.title}
-                  width={600}
-                  height={800}
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
+                {/* IMAGE */}
+                <div className="relative aspect-[3/4] bg-gray-100 flex items-center justify-center overflow-hidden">
+                  <Image
+                    src={product.images[0]}
+                    alt={product.title}
+                    width={400}
+                    height={600}
+                    className="object-contain transition-transform duration-500 group-hover:scale-105"
+                  />
 
-                {product.availability === "sold-out" && (
-                  <div className="absolute inset-0 z-20 bg-white/70 flex items-center justify-center text-sm tracking-widest uppercase">
-                    Sold Out
+                  {product.availability === "sold-out" && (
+                    <div className="absolute inset-0 bg-white/70 flex items-center justify-center text-sm uppercase tracking-widest">
+                      Sold Out
+                    </div>
+                  )}
+                </div>
+
+                {/* TEXT */}
+                <div className="mt-4 text-center space-y-1">
+                  <p className="text-sm font-medium">
+                    {product.title}
+                  </p>
+
+                  <div className="flex justify-center items-center gap-2 text-sm">
+                    {hasDiscount && (
+                      <span className="line-through text-muted-foreground">
+                        {displayPrice(product.price)}
+                      </span>
+                    )}
+                    <span className="font-semibold">
+                      {displayPrice(
+                        product.discountedPrice || product.price
+                      )}
+                    </span>
                   </div>
-                )}
-              </div>
-
-              <div className="mt-6 text-center space-y-2">
-                <p className="text-[15px] tracking-[0.3em] uppercase font-medium">
-                  {product.title}
-                </p>
-                <p className="text-base font-semibold">
-                  {formatPrice(product.discountedPrice || product.price)}
-                </p>
+                </div>
               </div>
             </Link>
           );

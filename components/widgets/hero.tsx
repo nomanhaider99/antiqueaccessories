@@ -6,8 +6,7 @@ const Hero = () => {
       <Image
         src="/images/HeroDesktop.jpg"
         alt="Hero"
-        width={1450}
-        height={600}
+        fill
         priority
         className="object-cover sm:block hidden"
       />

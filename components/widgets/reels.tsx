@@ -30,10 +30,8 @@ export default function WatchAndBuyReels() {
 
   return (
     <section className="relative w-full">
-      {/* Title */}
       <h1 className="md:text-[2.5rem] text-[1.5rem] font-light text-center py-3">Watch and Buy</h1>
 
-      {/* Left Arrow */}
       <Button
         size="icon"
         variant="secondary"
@@ -43,7 +41,6 @@ export default function WatchAndBuyReels() {
         <ChevronLeft />
       </Button>
 
-      {/* Right Arrow */}
       <Button
         size="icon"
         variant="secondary"
@@ -53,17 +50,15 @@ export default function WatchAndBuyReels() {
         <ChevronRight />
       </Button>
 
-      {/* Reels */}
       <div
         ref={scrollRef}
-        className="w-full flex gap-4 overflow-x-auto px-10 no-scrollbar scroll-smooth"
+        className="w-full flex justify-center gap-4 overflow-x-auto px-10 no-scrollbar scroll-smooth"
       >
         {reels.map((reel) => (
           <div
             key={reel.id}
             className="relative min-w-[300px] h-[460px] rounded-xl overflow-hidden bg-black"
           >
-            {/* Video */}
             <video
               src={reel.video}
               autoPlay
@@ -74,7 +69,6 @@ export default function WatchAndBuyReels() {
               className="h-full w-full object-cover"
             />
 
-            {/* Views */}
             <div className="absolute top-3 left-3 flex items-center gap-1 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
               <Eye className="h-3 w-3" />
               {reel.views}
