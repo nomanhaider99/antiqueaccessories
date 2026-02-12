@@ -142,15 +142,15 @@ export default function Checkout() {
 
             <div>
               <p className="font-medium">Bank Transfer (Meezan):</p>
-              <p>Account Title: </p>
-              <p>Account Number: </p>
-              <p>IBAN: PK00MEZN0000000000</p>
+              <p>Account Title: SHAHZAD HASSAN</p>
+              <p>Account Number: 99360107843891</p>
+              <p>IBAN: PK02MEZN0099360107843891</p>
             </div>
 
             <p className="text-red-600 font-semibold">
               Please transfer the amount and send screenshot to WhatsApp:
             </p>
-            <p className="text-blue-600 font-bold">03XX-XXXXXXX</p>
+            <p className="text-blue-600 font-bold">+92 312 2745789</p>
           </CardContent>
         </Card>
 
