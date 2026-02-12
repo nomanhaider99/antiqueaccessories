@@ -20,16 +20,8 @@ const faqData = [
   },
   {
     question: "How shall I make a payment?",
-    answer: "We accept all major bank transfers, and popular digital wallets."
+    answer: "We accept all major bank transfers and Easypaisa/Jazzcash."
   },
-  {
-    question: "How can international customers pay?",
-    answer: "International customers can pay via Credit Card (Visa/Mastercard), PayPal, or Wire Transfer."
-  },
-  {
-    question: "International Orders",
-    answer: "We ship worldwide! Please note that international orders may be subject to local customs duties and taxes upon arrival."
-  }
 ];
 
 export function FAQs() {
