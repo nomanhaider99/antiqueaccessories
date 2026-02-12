@@ -95,7 +95,7 @@ export default function AddProduct() {
 
     const payload = {
       title: form.title,
-      category: form.category.toLowerCase(),
+      category: form.category,
       price: priceNum,
       availability: form.availability,
       description: form.description,

@@ -142,9 +142,9 @@ export default function Checkout() {
 
             <div>
               <p className="font-medium">Bank Transfer (Meezan):</p>
-              <p>Account Title: MAHRUKH NASEEM</p>
-              <p>Account Number: 01320106440933</p>
-              <p>IBAN: PK56MEZN0001320106440933</p>
+              <p>Account Title: </p>
+              <p>Account Number: </p>
+              <p>IBAN: PK00MEZN0000000000</p>
             </div>
 
             <p className="text-red-600 font-semibold">

@@ -58,12 +58,12 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
   };
 
   return (
-    <div className="w-full mx-auto px-4 py-8 md:py-12">
+    <div className="md:max-w-7xl w-full mx-auto md:px-4 px-0 py-8 md:py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
 
         {/* LEFT */}
         <div className="w-full flex flex-col-reverse md:flex-row gap-4">
-          <div className="flex md:flex-col gap-3 md:overflow-y-auto w-[20%]">
+          <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-x-visible md:overflow-y-auto w-full md:w-[20%] pb-2 md:pb-0">
             {product.images.map((img, idx) => (
               <button
                 key={idx}

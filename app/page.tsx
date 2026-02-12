@@ -5,8 +5,8 @@ import AboutUs from "@/components/widgets/about-us"
 import StoreFeatures from "@/components/ui/store-features"
 import Hero from "@/components/widgets/hero"
 import Reels from "@/components/widgets/reels"
-import NewArrivals from "@/components/widgets/new-arrivals"
-import Sale from "@/components/widgets/sale"
+import RenderProduct from "@/components/widgets/render-product"
+
 
 const page = () => {
   return (
@@ -14,9 +14,9 @@ const page = () => {
       <Header />
       <div className="flex flex-col items-center justify-between gap-2 w-full">
         <Hero />
-        <NewArrivals />
+        <RenderProduct category="new-arrivals" />
         <Reels />
-        <Sale />
+        <RenderProduct category="sale" />
         <AboutUs />
         <FAQs />
         <StoreFeatures />

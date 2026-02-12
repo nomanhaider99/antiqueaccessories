@@ -68,11 +68,6 @@ export default function WatchAndBuyReels() {
               preload="auto"
               className="h-full w-full object-cover"
             />
-
-            <div className="absolute top-3 left-3 flex items-center gap-1 bg-black/70 text-white text-xs px-2 py-1 rounded-full">
-              <Eye className="h-3 w-3" />
-              {reel.views}
-            </div>
           </div>
         ))}
       </div>

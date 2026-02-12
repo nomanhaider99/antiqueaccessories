@@ -96,7 +96,7 @@ const Header = () => {
               onClick={() => setCatOpen(!catOpen)}
               className="flex items-center justify-between"
             >
-              Categories <ChevronDown className={`h-4 w-4 transition ${catOpen ? "rotate-180" : ""}`} />
+              CATEGORIES <ChevronDown className={`h-4 w-4 transition ${catOpen ? "rotate-180" : ""}`} />
             </button>
 
             {catOpen && (
