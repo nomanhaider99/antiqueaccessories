@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const to = searchParams.get("to");
@@ -8,7 +10,7 @@ export async function GET(req: Request) {
 
   const res = await fetch(
     `https://hexarate.paikama.co/api/rates/PKR/${to}/latest`,
-    { next: { revalidate: 3600 } } // cache 1 hour
+    { next: { revalidate: 3600 } } 
   );
 
   const data = await res.json();
