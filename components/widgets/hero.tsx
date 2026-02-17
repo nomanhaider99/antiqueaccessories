@@ -4,14 +4,14 @@ const Hero = () => {
   return (
     <div className="relative w-full h-screen flex justify-center">
       <Image
-        src="/images/HeroDesktop.jpg"
+        src="/images/HeroDesktop.jpeg"
         alt="Hero"
         fill
         priority
-        className="object-cover sm:block hidden"
+        className="object-cover sm:block hidden w-full"
       />
       <Image
-        src="/images/Hero.jpg"
+        src="/images/HeroMobile.png"
         alt="Hero"
         fill
         priority

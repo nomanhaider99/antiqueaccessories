@@ -107,7 +107,7 @@ export default function OrderDetails({
                     {item.product.images?.[0] ? (
                       <Image
                         src={item.product.images[0]}
-                        alt={item.product.article}
+                        alt={'product-details-image'}
                         width={64}
                         height={64}
                         className="object-cover"

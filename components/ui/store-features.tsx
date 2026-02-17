@@ -2,11 +2,6 @@ import { Plane, Headphones, ShieldCheck } from "lucide-react";
 
 const features = [
   {
-    icon: Plane,
-    title: "EXPRESS SHIPPING",
-    description: "We offer shipping across the globe",
-  },
-  {
     icon: Headphones,
     title: "CUSTOMER SERVICE",
     description: "We are available from monday to friday to answer your questions.",
@@ -22,7 +17,7 @@ export default function StoreFeatures() {
   return (
     <section className="w-full bg-white py-16">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="grid gap-12 md:grid-cols-3">
+        <div className="grid gap-12 md:grid-cols-2">
           {features.map((item, index) => {
             const Icon = item.icon;
             return (

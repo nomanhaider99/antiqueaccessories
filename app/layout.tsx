@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
 import "./globals.css";
+import { customfont } from './font'
 import { CartProvider } from "@/lib/cart-context";
 import { Toaster } from "sonner";
-import CurrencySwitcher from "@/components/ui/currency-switcher";
 
-const dm_sans = DM_Sans({ subsets: ["latin"], weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900", "1000"] })
 
 export const metadata: Metadata = {
   title: "Antique Accessories",
@@ -20,11 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${dm_sans.className}`}
+        className={`${customfont.className}`}
       >
         <CartProvider>
           {children}
-          <CurrencySwitcher />
           <Toaster richColors position="top-center" />
         </CartProvider>
       </body>

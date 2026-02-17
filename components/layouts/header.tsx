@@ -100,7 +100,7 @@ const Header = () => {
             </button>
 
             {catOpen && (
-              <div className="ml-4 flex flex-col gap-3 overflow-y-scroll">
+              <div className="ml-4 flex flex-col gap-3 overflow-y-scroll h-[250px] overflow-y-scroll">
                 {categories.map(cat => (
                   <a key={cat.href} href={cat.href}>
                     {cat.label}

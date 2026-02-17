@@ -54,7 +54,6 @@ export async function POST(request: Request) {
       shipping_mode,
       payment_mode,
       items,
-      country,
       exchange_rate,
       currency
     } = body;
@@ -91,7 +90,7 @@ export async function POST(request: Request) {
     });
 
 
-    const shipping_fee = shipping_mode === "express" ? 399 : 199;
+    const shipping_fee = shipping_mode === "express" ? 350 : 350;
     const total = subtotal + shipping_fee;
 
     const orderId = randomUUID();
@@ -102,7 +101,6 @@ export async function POST(request: Request) {
         customer_name,
         phone,
         city,
-        country,
         house_number,
         street_number,
         address,
@@ -112,7 +110,7 @@ export async function POST(request: Request) {
         shipping_mode,
         payment_mode,
         exchange_rate,
-        currency
+        currency,
       });
 
       await tx.insert(orderItems).values(
@@ -136,10 +134,10 @@ export async function POST(request: Request) {
       },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error: any) {
     return NextResponse.json(
       {
-        message: "Failed to place order",
+        message: error.message,
         error: error instanceof Error ? error.message : String(error),
       },
       { status: 500 }

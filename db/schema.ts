@@ -24,8 +24,6 @@ export const orders = pgTable("orders", {
     .notNull(),
   city: text("city")
     .notNull(),
-  country: text("country")
-    .notNull(),
   house_number: text("house_number"),
   street_number: text("street_number"),
   address: text("address")
