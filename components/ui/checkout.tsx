@@ -66,7 +66,7 @@ export default function Checkout() {
   }, [finalCity, paymentMethod]);
 
   const subtotal = cartItems.reduce((s, i) => s + i.price * i.quantity, 0);
-  const shippingFee = 199;
+  const shippingFee = 350;
   const total = subtotal + shippingFee;
 
   const formatPrice = (value: number) => `${currency} ${value.toFixed(2)}`;
