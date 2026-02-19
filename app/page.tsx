@@ -7,7 +7,6 @@ import Hero from "@/components/widgets/hero"
 import Reels from "@/components/widgets/reels"
 import RenderProduct from "@/components/widgets/render-product"
 
-
 const page = () => {
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-between">

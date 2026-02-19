@@ -48,7 +48,7 @@ export default function Products() {
   const [deleting, setDeleting] = useState(false)
   const { setActiveTab, selectedProductId, setSelectedProductId } = useTabStore();
   const { currency, rate } = useCurrency();
-  
+
   const formatPrice = (value: number) =>
     `${currency} ${(rate * value).toFixed(2)}`;
 
@@ -137,9 +137,19 @@ export default function Products() {
                 </div>
               </TableCell>
 
-              {/* category */}
-              <TableCell className="font-medium">
-                {product.category}
+              {/* Category */}
+              <TableCell>
+                <div className="flex flex-wrap gap-1">
+                  {product.category && product.category.length > 0 ? (
+                    product.category.map((cat, i) => (
+                      <Badge key={i} className="rounded-full px-2 py-1 text-xs font-medium">
+                        {cat.charAt(0).toUpperCase() + cat.slice(1).replace(/-/g, " ")}
+                      </Badge>
+                    ))
+                  ) : (
+                    <span className="text-muted-foreground text-sm">No Category</span>
+                  )}
+                </div>
               </TableCell>
 
               {/* Price */}
@@ -192,7 +202,7 @@ export default function Products() {
                       <DropdownMenuItem
                         onClick={() => {
                           setSelectedProductId(product.id);
-                          setActiveTab('Edit Product');    
+                          setActiveTab('Edit Product');
                         }}
                       >
                         Edit

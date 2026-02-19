@@ -26,25 +26,11 @@ interface EditProductProps {
 const categories = [
   { label: "New Arrivals", value: "new-arrivals" },
   { label: "Sale", value: "sale" },
-  { label: "Clothing", value: "clothing" },
   { label: "Sets", value: "sets" },
   { label: "Necklaces", value: "necklaces" },
   { label: "Earings", value: "earings" },
   { label: "Rings", value: "rings" },
-  { label: "Anklets", value: "anklets" },
-  { label: "Bangles – Bracelets", value: "bangles-bracelets" },
-  { label: "Nosecuffs", value: "nosecuffs" },
-  { label: "Matha Patti", value: "matha-patti" },
-  { label: "Hair Accessories", value: "hair-accessories" },
-  { label: "Clutches – Bags", value: "clutches-bags" },
-  { label: "Gift Items", value: "gift-items" },
-  { label: "Meena Bazar", value: "meena-bazar" },
-  { label: "Jhumkaaz", value: "jhumkaaz" },
-  { label: "Gems & Stones", value: "gems-stones" },
-  { label: "Jewellery Boxes", value: "jewellery-boxes" },
-  { label: "Toe Rings", value: "toe-rings" },
 ];
-
 
 export default function EditProduct({ productId, onUpdated }: EditProductProps) {
   const [images, setImages] = useState<string[]>([]);
@@ -53,16 +39,32 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
 
   const [form, setForm] = useState({
     title: "",
-    category: "",
+    category: [] as string[],
     price: "",
     discountedPrice: "",
     availability: "available",
     discount: "0",
-    deliveryTimes: [""],
+    deliveryTimes: [""] as string[],
     description: "",
   });
 
-  console.log('Product ID: ', productId);
+  const handleCategoryChange = (index: number, value: string) => {
+    const updated = [...form.category];
+    updated[index] = value;
+    handleChange("category", updated);
+  };
+
+  const addCategoryField = () => {
+    handleChange("category", [...form.category, ""]);
+  };
+
+  const removeCategoryField = (index: number) => {
+    handleChange(
+      "category",
+      form.category.filter((_, i) => i !== index)
+    );
+  };
+
   useEffect(() => {
     if (!productId) return;
 
@@ -125,15 +127,16 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
 
     const payload = {
       title: form.title,
-      category: form.category,
+      category: form.category.filter((c) => c.trim().toLowerCase() !== ""), // send array
       price: priceNum,
       availability: form.availability,
       description: form.description,
       discount: discountNum,
       discountedPrice: discountedPrice,
-      deliveryTime: cleanDelivery,
+      deliveryTime: form.deliveryTimes.filter((t) => t.trim() !== ""),
       images,
     };
+
 
     if (images.length === 0) {
       setMessage({ type: "error", text: "Please fill all required fields and add at least one image." });
@@ -217,21 +220,31 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label>Category *</Label>
-            <Select value={form.category} onValueChange={val => handleChange("category", val)}>
-              <SelectTrigger><SelectValue placeholder="Select collection" /></SelectTrigger>
-              <SelectContent>
-                {
-                  categories.map((item, index) => (
-                    <SelectItem 
-                      value={item.value} 
-                      key={index} 
-                    >
-                      {item.label}
-                    </SelectItem>
-                  ))
-                }
-              </SelectContent>
-            </Select>
+            {form.category.map((cat, index) => (
+              <div key={index} className="flex gap-2 mb-1">
+                <Select
+                  value={cat}
+                  onValueChange={(val) => handleCategoryChange(index, val)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" className="w-full" />
+                  </SelectTrigger>
+                  <SelectContent className="w-full">
+                    {categories.map((item) => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button variant="outline" size="sm" onClick={() => removeCategoryField(index)}>
+                  <Trash size={16} />
+                </Button>
+              </div>
+            ))}
+            <Button size="sm" onClick={addCategoryField}>
+              <Plus size={16} /> Add Category
+            </Button>
           </div>
         </div>
 

@@ -19,6 +19,8 @@ export default function RenderProduct({ category }: { category?: string }) {
       .then(setData);
   }, [])
 
+  console.log(category)
+
   if (data.length == 0) {
     return;
   }
@@ -30,16 +32,23 @@ export default function RenderProduct({ category }: { category?: string }) {
       .join(" ");
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-10">
-      <h1 className="text-2xl md:text-4xl font-light mb-10">
-        {formatCategory(category as string)}
+    <section className="w-full mx-auto px-6 md:py-16 py-4 space-y-5">
+      <h1 className="md:text-[2.5rem] text-[1.5rem] font-light">
+        Our {formatCategory(category!)}
       </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         {data.map((product) => {
           const hasDiscount =
-            product.discountedPrice &&
+            product.discountedPrice > 0 &&
             product.discountedPrice < product.price;
+
+          const discountPercent = hasDiscount
+            ? Math.round(
+              ((product.price - product.discountedPrice) / product.price) *
+              100
+            )
+            : 0;
 
           return (
             <Link
@@ -47,50 +56,42 @@ export default function RenderProduct({ category }: { category?: string }) {
               href={`/products/${product.id}`}
               className="group"
             >
-              <div className="relative bg-white">
-                {/* SALE BADGE */}
+              {/* IMAGE */}
+              <div className="relative w-full aspect-[3/4] overflow-hidden bg-zinc-100">
+
+                {/* DISCOUNT BADGE */}
                 {hasDiscount && (
-                  <span className="absolute top-3 left-3 z-10 bg-black text-white text-xs px-3 py-1 rounded-full">
-                    {formatCategory(product.category)}
+                  <span className="absolute top-3 left-3 z-10 bg-green-700 text-white text-[11px] font-semibold px-3 py-1 tracking-wider uppercase">
+                    {discountPercent}% OFF
                   </span>
                 )}
 
-                {/* IMAGE */}
-                <div className="relative aspect-[3/4] bg-gray-100 flex items-center justify-center overflow-hidden">
-                  <Image
-                    src={product.images[0]}
-                    alt={product.title}
-                    width={400}
-                    height={600}
-                    className="object-contain transition-transform duration-500 group-hover:scale-105"
-                  />
+                <Image
+                  src={product.images[0]}
+                  alt={product.title}
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  width={400}
+                  height={600}
+                />
 
-                  {product.availability === "sold-out" && (
-                    <div className="absolute inset-0 bg-white/70 flex items-center justify-center text-sm uppercase tracking-widest">
-                      Sold Out
-                    </div>
-                  )}
-                </div>
-
-                {/* TEXT */}
-                <div className="mt-4 text-center space-y-1">
-                  <p className="text-sm font-medium">
-                    {product.title}
-                  </p>
-
-                  <div className="flex justify-center items-center gap-2 text-sm">
-                    {hasDiscount && (
-                      <span className="line-through text-muted-foreground">
-                        {displayPrice(product.price)}
-                      </span>
-                    )}
-                    <span className="font-semibold">
-                      {displayPrice(
-                        product.discountedPrice || product.price
-                      )}
-                    </span>
+                {/* SOLD OUT OVERLAY */}
+                {product.availability === "sold-out" && (
+                  <div className="absolute inset-0 z-20 bg-white/70 flex items-center justify-center text-sm tracking-widest uppercase">
+                    Sold Out
                   </div>
-                </div>
+                )}
+              </div>
+
+              <div className="mt-4 text-center space-y-1">
+                <p className="text-[13px] tracking-[0.25em] uppercase">
+                  {product.title}
+                </p>
+
+                <p className="text-sm">
+                  {displayPrice(
+                    product.discountedPrice || product.price
+                  )}
+                </p>
               </div>
             </Link>
           );

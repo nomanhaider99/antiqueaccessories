@@ -9,25 +9,11 @@ import Link from "next/link"
 const categories = [
   { label: "New Arrivals", href: "/category/new-arrivals" },
   { label: "Sale", href: "/category/sale" },
-  { label: "Clothing", href: "/category/clothing" },
   { label: "Sets", href: "/category/sets" },
   { label: "Necklaces", href: "/category/necklaces" },
   { label: "Earings", href: "/category/earings" },
   { label: "Rings", href: "/category/rings" },
-  { label: "Anklets", href: "/category/anklets" },
-  { label: "Bangles – Bracelets", href: "/category/bangles-bracelets" },
-  { label: "Nosecuffs", href: "/category/nosecuffs" },
-  { label: "Matha Patti", href: "/category/matha-patti" },
-  { label: "Hair Accessories", href: "/category/hair-accessories" },
-  { label: "Clutches – Bags", href: "/category/clutches-bags" },
-  { label: "Gift Items", href: "/category/gift-items" },
-  { label: "Meena Bazar", href: "/category/meena-bazar" },
-  { label: "Jhumkaaz", href: "/category/jhumkaaz" },
-  { label: "Gems & Stones", href: "/category/gems-stones" },
-  { label: "Jewellery Boxes", href: "/category/jewellery-boxes" },
-  { label: "Toe Rings", href: "/category/toe-rings" },
 ]
-
 
 const Header = () => {
   const [open, setOpen] = useState(false)
@@ -69,7 +55,7 @@ const Header = () => {
               <a
                 key={cat.href}
                 href={cat.href}
-                className="block px-4 py-[4px] text-2xs tracking-widest hover:bg-gray-50"
+                className="block px-4 py-2 text-2xs tracking-widest hover:bg-gray-50"
               >
                 {cat.label}
               </a>

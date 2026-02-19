@@ -14,7 +14,7 @@ export type ProductAvailability = "available" | "sold-out"
 export interface Product {
   id: string
   title: string
-  category: string
+  category: string[]
   price: number
   availability: ProductAvailability
   description: string

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { products } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,13 +9,16 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get("category");
 
     const data = category
-      ? await db.select().from(products).where(eq(products.category, category))
+      ? await db
+          .select()
+          .from(products)
+          .where(sql`${products.category} @> ${JSON.stringify([category])}::jsonb`)
       : await db.select().from(products);
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { error: error },
+      { error: (error as Error).message },
       { status: 500 }
     );
   }

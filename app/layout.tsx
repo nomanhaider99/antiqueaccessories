@@ -3,6 +3,7 @@ import "./globals.css";
 import { customfont } from './font'
 import { CartProvider } from "@/lib/cart-context";
 import { Toaster } from "sonner";
+import CurrencySwitcher from "@/components/ui/currency-switcher";
 
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function RootLayout({
       >
         <CartProvider>
           {children}
+          <CurrencySwitcher />
           <Toaster richColors position="top-center" />
         </CartProvider>
       </body>

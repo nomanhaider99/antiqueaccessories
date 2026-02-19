@@ -1,8 +1,7 @@
-import { notFound } from "next/navigation";
 import Header from "@/components/layouts/header";
 import Footer from "@/components/layouts/footer";
 import { products } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import CollectionProducts from "@/components/widgets/collections-products";
 
@@ -13,10 +12,16 @@ export default async function ProductPage({
 }) {
   const { category } = await params;
 
-  const data = await db
-    .select()
-    .from(products)
-    .where(eq(products.category, category))
+
+  const data = category
+    ? await db
+      .select()
+      .from(products)
+      .where(
+        sql`${products.category} @> ${JSON.stringify([category])}::jsonb`
+      )
+    : await db.select().from(products);
+
 
   if (!data.length) {
     return (

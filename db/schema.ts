@@ -73,8 +73,10 @@ export const products = pgTable("products", {
   title: varchar("title", { length: 120 })
     .notNull(),
 
-  category: varchar("category", { length: 120 })
-    .notNull(),
+  category: jsonb("category")
+    .$type<string[]>()
+    .notNull()
+    .default([]),
 
   price: real("price")
     .notNull(),
