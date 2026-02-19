@@ -8,9 +8,9 @@ export default function AboutSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center">
 
           {/* LEFT — IMAGE */}
-          <div className="relative w-full aspect-[3/4] overflow-hidden bg-zinc-100">
+          <div className="relative w-full aspect-[3/4] overflow-hidden">
             <Image
-              src="/images/logo.jpeg"
+              src="/images/logo.png"
               alt="Craftsmanship"
               fill
               className="object-cover"

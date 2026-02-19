@@ -6,7 +6,7 @@ import {
   uuid,
   integer,
   timestamp,
-  varchar,  
+  varchar,
 } from "drizzle-orm/pg-core";
 import { pgEnum } from "drizzle-orm/pg-core";
 
@@ -21,6 +21,8 @@ export const orders = pgTable("orders", {
     .defaultRandom()
     .primaryKey(),
   customer_name: text("customer_name")
+    .notNull(),
+  country: text("country")
     .notNull(),
   city: text("city")
     .notNull(),
@@ -50,7 +52,7 @@ export const orders = pgTable("orders", {
     .default("PKR"),
 
   exchange_rate: real("exchange_rate")
-    .notNull(), 
+    .notNull(),
 
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()

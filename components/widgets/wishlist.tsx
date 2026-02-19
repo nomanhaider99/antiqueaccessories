@@ -1,13 +1,16 @@
 "use client"
 
 import Image from "next/image"
-import { Trash, ShoppingBag } from "lucide-react"
+import { Trash, ShoppingBag, Check } from "lucide-react"
 import { getWishlist, removeFromWishlist } from "@/lib/wishlist"
 import { addToCart } from "@/lib/cart"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function Wishlist() {
   const [items, setItems] = useState<any[]>([])
+  const [addedIds, setAddedIds] = useState<Set<string>>(new Set())
+  const router = useRouter();
 
   useEffect(() => {
     setItems(getWishlist())
@@ -15,10 +18,13 @@ export default function Wishlist() {
 
   const handleRemove = (id: string) => {
     removeFromWishlist(id)
-    setItems(getWishlist())
+    // Optimistic UI update: Remove immediately from state
+    setItems(prev => prev.filter(item => item.id !== id))
   }
 
   const handleAddToCart = (item: any) => {
+    setAddedIds(prev => new Set(prev).add(item.id))
+
     addToCart({
       id: item.id,
       title: item.title,
@@ -26,73 +32,98 @@ export default function Wishlist() {
       quantity: 1,
       images: item.images,
     })
+
+    window.dispatchEvent(new Event("cart-updated"))
+    setTimeout(() => {
+      setAddedIds(prev => {
+        const newSet = new Set(prev)
+        newSet.delete(item.id)
+        return newSet
+      })
+    }, 1500)
   }
 
   if (!items.length) {
     return (
-      <div className="text-center py-20 text-gray-500">
-        Your wishlist is empty.
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-gray-500">
+        <ShoppingBag className="mb-4 opacity-20" size={48} />
+        <p className="tracking-widest uppercase text-sm">Your wishlist is empty</p>
       </div>
     )
   }
 
   return (
-    <div className="w-3/4 mx-auto px-4 py-10 space-y-6">
-      <h1 className="text-2xl font-light uppercase tracking-wide">
-        Wishlist
+    <div className="w-[800px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h1 className="text-2xl font-light uppercase tracking-[0.2em] mb-10 border-b pb-4">
+        My Wishlist
       </h1>
 
-      {items.map((item) => (
-        <div
-          key={item.id}
-          className="flex gap-4 border-b pb-6"
-        >
-          {/* Image */}
-          <div className="relative w-28 h-36 bg-gray-100">
-            <Image
-              src={item.images[0]}
-              alt={item.title}
-              fill
-              className="object-cover"
-            />
-          </div>
-
-          {/* Details */}
-          <div className="flex-1 flex flex-col justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-widest text-gray-500">
-                {item.category}
-              </p>
-              <h2 className="text-lg font-light uppercase">
-                {item.title}
-              </h2>
+      <div className="grid grid-cols-1 gap-8">
+        {items.map((item) => (
+          <div
+            key={item.id}
+            className="group flex flex-row items-start gap-4 sm:gap-8 pb-8 border-b last:border-0"
+          >
+            {/* Image Container - Fixed ratio for consistency */}
+            <div className="relative aspect-[3/4] w-24 sm:w-32 flex-shrink-0 bg-gray-50 overflow-hidden">
+              <Image
+                src={item.images[0]}
+                alt={item.title}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
             </div>
 
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-medium">
-                PKR {item.discountedPrice}
-              </p>
+            {/* Content Area */}
+            <div className="flex flex-col flex-1 min-w-0 h-full justify-between py-1">
+              <div className="space-y-1">
+                <div className="flex justify-between items-start gap-2">
+                  <p className="text-[10px] uppercase tracking-widest text-gray-400 truncate">
+                    {item.category}
+                  </p>
+                  <button
+                    onClick={() => handleRemove(item.id)}
+                    className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                    aria-label="Remove item"
+                  >
+                    <Trash size={16} />
+                  </button>
+                </div>
+                <h2 className="text-sm sm:text-base font-medium uppercase tracking-tight truncate">
+                  {item.title}
+                </h2>
+                <p className="text-sm font-semibold text-gray-900">
+                  PKR {item.discountedPrice.toLocaleString()}
+                </p>
+              </div>
 
-              <div className="flex gap-3">
+              {/* Action Button */}
+              <div className="mt-4">
                 <button
                   onClick={() => handleAddToCart(item)}
-                  className="flex items-center gap-1 text-sm border px-3 py-1 hover:bg-gray-50"
+                  disabled={addedIds.has(item.id)}
+                  className={`
+                    w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 text-xs uppercase tracking-widest transition-all
+                    ${addedIds.has(item.id) 
+                      ? "bg-green-600 text-white border-green-600" 
+                      : "bg-black text-white hover:bg-gray-800 border-black"}
+                  `}
                 >
-                  <ShoppingBag size={14} />
-                  Add to Cart
-                </button>
-
-                <button
-                  onClick={() => handleRemove(item.id)}
-                  className="text-red-500 hover:opacity-70"
-                >
-                  <Trash size={16} />
+                  {addedIds.has(item.id) ? (
+                    <>
+                      <Check size={14} /> Added
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag size={14} /> Add to Cart
+                    </>
+                  )}
                 </button>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }

@@ -74,7 +74,7 @@ const Footer = () => {
       <div className="flex gap-6 mt-20">
         <a target="_blank" href="https://www.facebook.com/profile.php?id=100078955689437"><Facebook className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" /></a>
         <a target="_blank" href="https://www.instagram.com/antique_accesssories/"><Instagram className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" /></a>
-        <a target="_blank" href="https://api.whatsapp.com/send/?phone=923304765054&text&type=phone_number&app_absent=0"><Phone className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" /></a>
+        <a target="_blank" href="https://api.whatsapp.com/send/?phone=923122745789&text&type=phone_number&app_absent=0"><Phone className="w-5 h-5 cursor-pointer opacity-80 hover:opacity-100" /></a>
       </div>
 
       {/* Bottom bar */}

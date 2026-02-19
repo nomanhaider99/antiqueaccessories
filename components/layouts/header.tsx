@@ -22,7 +22,7 @@ const Header = () => {
   return (
     <header className="w-full sticky top-0 z-50 bg-white border-b">
       {/* Top row */}
-      <div className="flex items-center justify-between px-4 sm:px-8 lg:px-14 py-4">
+      <div className="flex items-center justify-between px-4 sm:px-8 lg:px-14 py-2">
         <div className="w-[120px] flex items-center">
           <button onClick={() => setOpen(!open)} className="lg:hidden">
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -33,7 +33,6 @@ const Header = () => {
         <Logo />
 
         <div className="flex items-center gap-4 sm:gap-6 w-[120px] justify-end">
-          <Link href={'/wishlist'}><Heart className="h-5 w-5 cursor-pointer hidden sm:block" /></Link>
           <Cart />
         </div>
       </div>

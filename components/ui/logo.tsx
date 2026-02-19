@@ -5,16 +5,16 @@ const Logo = () => {
     <div>
       <Image
         alt=""
-        src={"/images/logo.jpeg"}
-        width={125}
-        height={125}
+        src={"/images/logo.png"}
+        width={170}
+        height={170}
         className='rounded-full sm:block hidden'
       />
       <Image
         alt=""
-        src={"/images/logo.jpeg"}
-        width={80}
-        height={80}
+        src={"/images/logo.png"}
+        width={125}
+        height={125}
         className='rounded-full sm:hidden block'
       />
     </div>

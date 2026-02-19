@@ -19,7 +19,7 @@ export default function RenderProduct({ category }: { category?: string }) {
       .then(setData);
   }, [])
 
-  console.log(category)
+  console.log(data);
 
   if (data.length == 0) {
     return;

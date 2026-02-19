@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type Reel = {
   id: number;
@@ -22,7 +22,9 @@ export default function WatchAndBuyReels() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: "left" | "right") => {
-    scrollRef.current?.scrollBy({
+    if (!scrollRef.current) return;
+
+    scrollRef.current.scrollBy({
       left: dir === "left" ? -320 : 320,
       behavior: "smooth",
     });
@@ -30,7 +32,9 @@ export default function WatchAndBuyReels() {
 
   return (
     <section className="relative w-full">
-      <h1 className="md:text-[2.5rem] text-[1.5rem] font-light text-center py-3">Watch and Buy</h1>
+      <h1 className="md:text-[2.5rem] text-[1.5rem] font-light text-center py-3">
+        Watch and Buy
+      </h1>
 
       <Button
         size="icon"
@@ -52,12 +56,12 @@ export default function WatchAndBuyReels() {
 
       <div
         ref={scrollRef}
-        className="w-full flex justify-center gap-4 overflow-x-auto px-10 no-scrollbar scroll-smooth"
+        className="w-full flex gap-4 overflow-x-auto px-10 no-scrollbar snap-x snap-mandatory"
       >
         {reels.map((reel) => (
           <div
             key={reel.id}
-            className="relative min-w-[300px] h-[460px] rounded-xl overflow-hidden bg-black"
+            className="relative min-w-[300px] h-[460px] rounded-xl overflow-hidden bg-black snap-start"
           >
             <video
               src={reel.video}

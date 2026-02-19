@@ -19,6 +19,7 @@ import {
 
 import { getCart, CartItem } from "@/lib/cart";
 import { useCurrency } from "@/store/currency-store";
+import { useCart } from "@/lib/cart-context";
 
 const cities = [
   "Karachi",
@@ -32,18 +33,16 @@ const cities = [
 ];
 
 export default function Checkout() {
-  const router = useRouter();
+  const { cart: cartItems, refresh } = useCart(); // reactive cart
   const { currency, rate } = useCurrency();
-
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [useCustomCity, setUseCustomCity] = useState(false);
-
   const [paymentMethod, setPaymentMethod] = useState<"cash" | "advance">("advance");
-
   const [form, setForm] = useState({
     customer_name: "",
     city: "",
+    country: "",
     custom_city: "",
     house_number: "",
     street_number: "",
@@ -51,15 +50,10 @@ export default function Checkout() {
     phone: "",
   });
 
-  useEffect(() => {
-    setCartItems(getCart());
-  }, []);
-
   const finalCity = useCustomCity ? form.custom_city : form.city;
 
   useEffect(() => {
     if (!finalCity) return;
-
     if (finalCity.toLowerCase() !== "karachi" && paymentMethod === "cash") {
       setPaymentMethod("advance");
     }
@@ -68,12 +62,10 @@ export default function Checkout() {
   const subtotal = cartItems.reduce((s, i) => s + i.price * i.quantity, 0);
   const shippingFee = 350;
   const total = subtotal + shippingFee;
-
-  const formatPrice = (value: number) => `${currency} ${value.toFixed(2)}`;
-
   const convertedSubtotal = subtotal * rate;
   const convertedShipping = shippingFee * rate;
   const convertedTotal = total * rate;
+  const formatPrice = (value: number) => `${currency} ${value.toFixed(2)}`;
 
   const placeOrder = async () => {
     if (cartItems.length === 0) return;
@@ -117,7 +109,7 @@ export default function Checkout() {
       toast.success("Order placed successfully");
 
       localStorage.removeItem("cart");
-      setCartItems([]);
+      refresh();
 
       router.push(`/orders/${data.orderId}`);
     } catch {
@@ -146,6 +138,18 @@ export default function Checkout() {
                   setForm({ ...form, customer_name: e.target.value })
                 }
                 placeholder="Enter your full name"
+              />
+            </div>
+
+            <div>
+              <Label>Country</Label>
+              <Input
+                className="rounded-none"
+                value={form.country}
+                onChange={(e) =>
+                  setForm({ ...form, country: e.target.value })
+                }
+                placeholder="Enter your country"
               />
             </div>
 
@@ -309,43 +313,43 @@ export default function Checkout() {
 
       {/* SUMMARY */}
       <Card className="shadow-none border-none">
-          <CardHeader>
-            <CardTitle>Order Summary</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {cartItems.map((item, index) => (
-              <div key={index} className="flex gap-3">
-                <Image
-                  src={item.images[0]}
-                  alt={item.title}
-                  width={60}
-                  height={60}
-                />
-                <div className="flex-1">
-                  <p>{item.title}</p>
-                </div>
-                <p>{formatPrice(item.price * item.quantity * rate)}</p>
+        <CardHeader>
+          <CardTitle>Order Summary</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {cartItems.map((item, index) => (
+            <div key={index} className="flex gap-3">
+              <Image
+                src={item.images[0]}
+                alt={item.title}
+                width={60}
+                height={60}
+              />
+              <div className="flex-1">
+                <p>{item.title}</p>
               </div>
-            ))}
-
-            <div className="border-t pt-3 text-sm space-y-1">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span>{formatPrice(convertedSubtotal)}</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>Shipping</span>
-                <span>{formatPrice(convertedShipping)}</span>
-              </div>
-
-              <div className="flex justify-between font-semibold">
-                <span>Total</span>
-                <span>{formatPrice(convertedTotal)}</span>
-              </div>
+              <p>{formatPrice(item.price * item.quantity * rate)}</p>
             </div>
-          </CardContent>
-        </Card>
+          ))}
+
+          <div className="border-t pt-3 text-sm space-y-1">
+            <div className="flex justify-between">
+              <span>Subtotal</span>
+              <span>{formatPrice(convertedSubtotal)}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span>Delivery Charges</span>
+              <span>{formatPrice(convertedShipping)}</span>
+            </div>
+
+            <div className="flex justify-between font-semibold">
+              <span>Total</span>
+              <span>{formatPrice(convertedTotal)}</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
