@@ -24,7 +24,7 @@ export default function CurrencySwitcher() {
   };
 
   return (
-    <div className="fixed bottom-12 right-12 z-50">
+    <div className="fixed md:bottom-12 md:right-12 bottom-6 right-6 z-50">
       {open && (
         <div className="mb-2 w-72 rounded-xl bg-white shadow-xl border overflow-hidden">
           {currencies.map((c) => (
