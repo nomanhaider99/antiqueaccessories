@@ -10,7 +10,13 @@ import {
 } from "drizzle-orm/pg-core";
 import { pgEnum } from "drizzle-orm/pg-core";
 
-export const orderStatusEnum = pgEnum("order_status", ["pending", "accepted", "completed", "rejected"]);
+export const orderStatusEnum = pgEnum("order_status", [
+  "pending",
+  "accepted",
+  "out_for_delivery",
+  "delivered",
+  "rejected",
+]);
 
 export const shippingModeEnum = pgEnum("shipping_mode", ["standard"]);
 

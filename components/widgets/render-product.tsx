@@ -1,40 +1,31 @@
-'use client'
-
 import Image from "next/image";
 import Link from "next/link";
-import { useCurrency } from "@/store/currency-store";
-import { useEffect, useState } from "react";
-import { Product } from "@/types";
+import Price from "../ui/price";
+import { db } from "@/db";
+import { products } from "@/db/schema";
+import { sql } from "drizzle-orm";
 
-export default function RenderProduct({ category }: { category?: string }) {
-  const { currency, rate } = useCurrency();
-  const [data, setData] = useState<Product[]>([]);
+export default async function RenderProduct({ category }: { category?: string }) {
+  const data = category
+    ? await db
+      .select()
+      .from(products)
+      .where(sql`${products.category} @> ${JSON.stringify([category])}::jsonb`)
+    : await db.select().from(products);
 
-  const displayPrice = (value: number) =>
-    `${currency} ${(rate * value).toFixed(2)}`;
+  if (!data.length) return null;
 
-  useEffect(() => {
-    fetch(`/api/products?category=${category}`)
-      .then(res => res.json())
-      .then(setData);
-  }, [])
 
-  console.log(data);
-
-  if (data.length == 0) {
-    return;
-  }
-
-  const formatCategory = (value: string) =>
+  const formatCategory = (value?: string) =>
     value
-      .split("-")
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
+      ?.split("-")
+      ?.map(w => w[0]?.toUpperCase() + w?.slice(1))
+      ?.join(" ");
 
   return (
     <section className="w-full mx-auto px-6 md:py-16 py-4 space-y-5">
       <h1 className="md:text-[2.5rem] text-[1.5rem] font-light">
-        Our {formatCategory(category!)}
+        Our {category ? formatCategory(category) : 'Products'}
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -68,11 +59,11 @@ export default function RenderProduct({ category }: { category?: string }) {
 
                 <Image
                   src={product.images[0]}
-                  alt={product.title}
+                  alt={'productimage'}
+                  fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  width={400}
-                  height={600}
                 />
+
 
                 {/* SOLD OUT OVERLAY */}
                 {product.availability === "sold-out" && (
@@ -87,16 +78,15 @@ export default function RenderProduct({ category }: { category?: string }) {
                   {product.title}
                 </p>
 
-                <p className="text-sm">
-                  {displayPrice(
-                    product.discountedPrice || product.price
-                  )}
-                </p>
+                <Price
+                  value={product.discountedPrice || product.price}
+                />
               </div>
             </Link>
           );
         })}
       </div>
     </section>
+
   );
 }

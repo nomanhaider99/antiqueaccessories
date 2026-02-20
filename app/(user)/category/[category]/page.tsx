@@ -1,9 +1,9 @@
 import Header from "@/components/layouts/header";
 import Footer from "@/components/layouts/footer";
 import { products } from "@/db/schema";
-import { eq, sql } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { db } from "@/db";
-import CollectionProducts from "@/components/widgets/collections-products";
+import RenderProduct from "@/components/widgets/render-product";
 
 export default async function ProductPage({
   params,
@@ -25,7 +25,7 @@ export default async function ProductPage({
 
   if (!data.length) {
     return (
-      <div className="w-full min-h-screen flex flex-col items-center overflow-x-hidden">
+      <div className="w-full min-h-screen flex flex-col items-center">
         <Header />
         <div className="h-[60vh] w-full flex justify-center items-center">
           Products Not Found!
@@ -36,10 +36,10 @@ export default async function ProductPage({
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center overflow-x-hidden">
+    <div className="w-full min-h-screen flex flex-col items-center">
       <Header />
       <div>
-        <CollectionProducts products={data as any} loading={false} category={category} />
+        <RenderProduct category={category} />
       </div>
       <Footer />
     </div>

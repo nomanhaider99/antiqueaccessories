@@ -1,6 +1,11 @@
 // ================= ENUM TYPES =================
 
-export type OrderStatus = "pending" | "accepted" | "completed" | "rejected"
+export type OrderStatus =
+  | "pending"
+  | "accepted"
+  | "out_for_delivery"
+  | "delivered"
+  | "rejected"
 
 export type ShippingMode = "standard"
 

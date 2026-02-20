@@ -33,19 +33,26 @@ const formatDate = (date: string | Date) =>
   })
 
 
-type OrderStatus = "Accepted" | "Pending" | "Completed" | "Rejected"
+type OrderStatus =
+  | "Pending"
+  | "Accepted"
+  | "Out for Delivery"
+  | "Delivered"
+  | "Rejected"
 
 const statusStyles: Record<OrderStatus, string> = {
-  Accepted: "bg-green-100 text-green-700",
   Pending: "bg-orange-100 text-orange-700",
-  Completed: "bg-blue-100 text-blue-700",
+  Accepted: "bg-green-100 text-green-700",
+  "Out for Delivery": "bg-purple-100 text-purple-700",
+  Delivered: "bg-blue-100 text-blue-700",
   Rejected: "bg-red-100 text-red-700",
 }
 
 const statusMap = {
   pending: "Pending",
   accepted: "Accepted",
-  completed: "Completed",
+  out_for_delivery: "Out for Delivery",
+  delivered: "Delivered",
   rejected: "Rejected",
 } as const
 
@@ -55,13 +62,13 @@ export default function Orders() {
   const [selectedOrderId, setSelectedOrderId] = React.useState<string | null>(null)
   const [detailsOpen, setDetailsOpen] = React.useState(false)
   const [status, setStatus] = React.useState<
-    "all" | "pending" | "accepted" | "completed" | "rejected"
+    "all" | "pending" | "accepted" | "out_for_delivery" | "delivered" | "rejected"
   >("all");
   const [search, setSearch] = React.useState("");
   const { currency, rate } = useCurrency();
 
   const formatPrice = (value: number) =>
-    `${currency} ${(value*rate).toFixed(2)}`;
+    `${currency} ${(value * rate).toFixed(2)}`;
 
   const filterLabel =
     status === "all"
@@ -88,7 +95,12 @@ export default function Orders() {
 
   const updateOrderStatus = async (
     orderId: string,
-    newStatus: "pending" | "accepted" | "completed" | "rejected"
+    newStatus:
+      | "pending"
+      | "accepted"
+      | "out_for_delivery"
+      | "delivered"
+      | "rejected"
   ) => {
     setorders((prev) =>
       prev.map((o) =>
@@ -128,7 +140,12 @@ export default function Orders() {
             <DropdownMenuItem onClick={() => setStatus("all")}>All Orders</DropdownMenuItem>
             <DropdownMenuItem onClick={() => setStatus("pending")}>Pending</DropdownMenuItem>
             <DropdownMenuItem onClick={() => setStatus("accepted")}>Accepted</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setStatus("completed")}>Completed</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setStatus("out_for_delivery")}>
+              Out for Delivery
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setStatus("delivered")}>
+              Delivered
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setStatus("rejected")}>Rejected</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -219,7 +236,7 @@ export default function Orders() {
                   </DropdownMenuTrigger>
 
                   <DropdownMenuContent align="start">
-                    {(["pending", "accepted", "completed", "rejected"] as const).map(
+                    {(["pending", "accepted", "out_for_delivery", "delivered", "rejected"] as const).map(
                       (s) => (
                         <DropdownMenuItem
                           key={s}

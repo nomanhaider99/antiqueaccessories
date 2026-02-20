@@ -24,7 +24,7 @@ export default async function ProductPage({
   }
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center overflow-x-hidden">
+    <div className="w-full min-h-screen flex flex-col items-center">
       <Header />
       <div>
         <ProductDetails product={product[0]} />

@@ -55,7 +55,7 @@ export default async function ProductPage({
         .where(eq(orderItems.order_id, orderData.id));
 
     return (
-        <div className="w-full min-h-screen flex flex-col items-center overflow-x-hidden">
+        <div className="w-full min-h-screen flex flex-col items-center">
             <Header />
             <div className="py-4">
                 <OrderDetails order={orderData} items={items} />

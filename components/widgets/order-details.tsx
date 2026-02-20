@@ -3,7 +3,12 @@
 import { useCurrency } from "@/store/currency-store";
 import Image from "next/image";
 
-type OrderStatus = "pending" | "accepted" | "completed" | "rejected";
+type OrderStatus =
+  | "pending"
+  | "accepted"
+  | "out_for_delivery"
+  | "delivered"
+  | "rejected";
 
 type Order = {
   id: string;
@@ -34,17 +39,19 @@ interface Props {
 }
 
 const statusStyles: Record<OrderStatus, string> = {
-  accepted: "bg-green-100 text-green-700",
-  rejected: "bg-red-100 text-red-600",
-  completed: "bg-blue-100 text-blue-600",
   pending: "bg-orange-100 text-orange-600",
+  accepted: "bg-green-100 text-green-700",
+  out_for_delivery: "bg-purple-100 text-purple-700",
+  delivered: "bg-blue-100 text-blue-600",
+  rejected: "bg-red-100 text-red-600",
 };
 
 const statusLabel: Record<OrderStatus, string> = {
-  accepted: "Accepted",
-  rejected: "Rejected",
-  completed: "Completed",
   pending: "Pending",
+  accepted: "Accepted",
+  out_for_delivery: "Out for Delivery",
+  delivered: "Delivered",
+  rejected: "Rejected",
 };
 
 export default function OrderDetails({ order, items }: Props) {

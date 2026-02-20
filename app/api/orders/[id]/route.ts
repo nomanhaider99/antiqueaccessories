@@ -22,7 +22,7 @@ export async function GET(
         { status: 404 }
       );
     }
-    
+
     const items = await db
       .select({
         orderItemId: orderItems.id,
@@ -67,7 +67,13 @@ export async function GET(
 }
 
 
-const VALID_STATUSES = ["pending", "accepted", "completed", "rejected"] as const;
+const VALID_STATUSES = [
+  "pending",
+  "accepted",
+  "out_for_delivery",
+  "delivered",
+  "rejected",
+] as const;
 
 export async function PATCH(
   request: NextRequest,

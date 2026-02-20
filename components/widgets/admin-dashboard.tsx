@@ -20,31 +20,6 @@ import AddProduct from '../ui/add-product';
 import OrderDetails from '../ui/order-details';
 import EditProduct from '../ui/edit-product';
 
-const mockOrder = {
-  id: "ORD-10234",
-  customerName: "Ali Khan",
-  email: "alikhan@gmail.com",
-  phone: "+92 300 1234567",
-  address: "House 12, Street 8, DHA Phase 6, Lahore, Pakistan",
-  items: [
-    {
-      id: "PRD-01",
-      name: "Luxury Gold Bracelet",
-      quantity: 2,
-      price: 4500,
-    },
-    {
-      id: "PRD-02",
-      name: "Artificial Pearl Necklace",
-      quantity: 1,
-      price: 3200,
-    },
-  ],
-  total: 12200,
-  status: "Pending",
-  createdAt: "2026-01-29T14:35:00.000Z",
-};
-
 const AdminDashboard = () => {
   const { activeTab, setActiveTab, selectedProductId } = useTabStore();
 

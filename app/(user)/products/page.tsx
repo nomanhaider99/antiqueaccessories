@@ -1,13 +1,13 @@
 import Footer from "@/components/layouts/footer"
 import Header from "@/components/layouts/header"
-import Products from "@/components/widgets/products"
+import RenderProduct from "@/components/widgets/render-product"
 
 const page = () => {
   return (
-    <div className="w-full min-h-screen flex flex-col items-center overflow-x-hidden">
+    <div className="w-full min-h-screen flex flex-col items-center">
       <Header />
       <div className="flex flex-col gap-2 w-full">
-        <Products />
+        <RenderProduct category="" />
       </div>
       <Footer />
     </div>
