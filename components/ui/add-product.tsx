@@ -44,7 +44,6 @@ export default function AddProduct() {
     description: "",
   });
 
-
   const [loading, setLoading] = React.useState(false);
   const [message, setMessage] = React.useState<{ type: "success" | "error"; text: string } | null>(null);
 

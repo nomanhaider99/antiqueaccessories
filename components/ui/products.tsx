@@ -143,7 +143,7 @@ export default function Products() {
                   {product.category && product.category.length > 0 ? (
                     product.category.map((cat, i) => (
                       <Badge key={i} className="rounded-full px-2 py-1 text-xs font-medium">
-                        {cat.charAt(0).toUpperCase() + cat.slice(1).replace(/-/g, " ")}
+                        {cat}
                       </Badge>
                     ))
                   ) : (

@@ -12,9 +12,8 @@ export default async function RenderProduct({ category }: { category?: string })
       .from(products)
       .where(sql`${products.category} @> ${JSON.stringify([category])}::jsonb`)
     : await db.select().from(products);
-
-  if (!data.length) return null;
-
+  
+    if (!data.length) return null;
 
   const formatCategory = (value?: string) =>
     value

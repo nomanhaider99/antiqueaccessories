@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export default function AboutSection() {
   return (
-    <section className="w-full bg-white" id="aboutus">
-      <div className="mx-auto px-6 py-16 md:py-24 w-full">
+    <section className="w-full bg-white py-0" id="aboutus">
+      <div className="mx-auto px-6 pb-4 w-full">
         {/* Changed to grid-cols-1 for mobile, md:grid-cols-2 for desktop */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center">
 
