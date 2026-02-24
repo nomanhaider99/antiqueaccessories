@@ -26,10 +26,27 @@ interface EditProductProps {
 const categories = [
   { label: "New Arrivals", value: "new-arrivals" },
   { label: "Sale", value: "sale" },
-  { label: "Sets", value: "sets" },
-  { label: "Necklaces", value: "necklaces" },
-  { label: "Earings", value: "earings" },
+  { label: "Earrings", value: "earrings" },
+  { label: "Chokr", value: "chokr" },
   { label: "Rings", value: "rings" },
+  { label: "Mala", value: "mala" },
+  { label: "Pazaib", value: "pazaib" },
+  { label: "Jummka", value: "jummka" },
+  { label: "Bangles", value: "bangles" },
+  { label: "Kara", value: "kara" },
+  { label: "Metal bags", value: "metal-bags" },
+  { label: "Kundangas", value: "kundangas" },
+  { label: "Brass metal bags", value: "brass-metal-bags" },
+  { label: "Oxidise mala", value: "oxidise-mala" },
+  { label: "Oxidise earrings", value: "oxidise-earrings" },
+  { label: "Afghani vantage chokr set", value: "afghani-vantage-chokr-set" },
+  { label: "Rikshaw truck", value: "rikshaw-truck" },
+  { label: "Truck art", value: "truck-art" },
+  { label: "Brass", value: "brass" },
+  { label: "Wooden", value: "wooden" },
+  { label: "Coaster", value: "coaster" },
+  { label: "Bluepottery", value: "bluepottery" },
+  { label: "Onyx", value: "onyx" },
 ];
 
 export default function EditProduct({ productId, onUpdated }: EditProductProps) {
@@ -274,7 +291,6 @@ export default function EditProduct({ productId, onUpdated }: EditProductProps) 
             <Input type="number" value={form.discount} onChange={e => handleChange("discount", e.target.value)} />
           </div>
         </div>
-
 
         {/* Dynamic arrays: DeliveryTimes */}
         <div className="space-y-2">

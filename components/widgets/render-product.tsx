@@ -13,7 +13,14 @@ export default async function RenderProduct({ category }: { category?: string })
       .where(sql`${products.category} @> ${JSON.stringify([category])}::jsonb`)
     : await db.select().from(products);
   
-    if (!data.length) return null;
+    if (!data.length) return (
+      <div className="w-full py-16 flex flex-col items-center gap-4">
+        <h2 className="text-xl font-light">No products found in this category.</h2>
+        <Link href="/products" className="px-4 py-2 bg-black text-white rounded  transition">
+          View All Products
+        </Link>
+      </div>
+    );
 
   const formatCategory = (value?: string) =>
     value
