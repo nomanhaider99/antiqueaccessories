@@ -15,7 +15,7 @@ export default async function RenderProduct({ category }: { category?: string })
   
     if (!data.length) return (
       <div className="w-full py-16 flex flex-col items-center gap-4">
-        <h2 className="text-xl font-light">No products found in this category.</h2>
+        <h2 className="text-xl font-light">Products are not currently available for this category.</h2>
         <Link href="/products" className="px-4 py-2 bg-black text-white rounded  transition">
           View All Products
         </Link>

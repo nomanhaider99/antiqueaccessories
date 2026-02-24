@@ -107,9 +107,30 @@ const Header = () => {
             </button>
 
             {catOpen && (
-              <div className="ml-4 flex flex-col gap-3  overflow-y-scroll">
+              <div
+                className="
+      ml-2 mt-2
+      flex gap-3
+      overflow-x-auto
+      whitespace-nowrap
+      pb-2
+      no-scrollbar
+    "
+              >
                 {categories.map(cat => (
-                  <a key={cat.href} href={cat.href}>
+                  <a
+                    key={cat.href}
+                    href={cat.href}
+                    className="
+          inline-flex
+          text-xs
+          tracking-widest
+          uppercase
+          px-3 py-1.5
+          border rounded-full
+          shrink-0
+        "
+                  >
                     {cat.label}
                   </a>
                 ))}
