@@ -77,19 +77,6 @@ export default function ProductDetailsFrontend({ product }: ProductDetailsProps)
           </div>
 
           <div className="relative aspect-[3/4] w-full bg-gray-100 overflow-hidden">
-            <button
-              onClick={() => {
-                toggleWishlist(product)
-                setLiked(!liked)
-              }}
-              className="absolute top-4 right-4 z-10 bg-white p-2 rounded-full shadow"
-            >
-              <Heart
-                className={`w-5 h-5 ${liked ? "fill-red-500 text-red-500" : "text-black"
-                  }`}
-              />
-            </button>
-
             <Image
               src={selectedImage}
               alt={product.title}

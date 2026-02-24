@@ -33,9 +33,9 @@ export default function CurrencySwitcher() {
               onClick={() => handleSelect(c.code)}
               className="flex w-full items-center gap-3 px-4 py-3 hover:bg-gray-100 text-left"
             >
-              <span className="text-xl">{c.flag}</span>
+              <span className="text-lg">{c.flag}</span>
 
-              <div className="text-sm">
+              <div className="text-xs">
                 <p className="font-medium">{c.label}</p>
                 <p className="text-gray-500">{c.code}</p>
               </div>
@@ -48,10 +48,10 @@ export default function CurrencySwitcher() {
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2 rounded-full bg-white px-4 py-2 shadow-lg border"
       >
-        <span className="text-xl">
+        <span className="text-lg">
           {currencies.find(c => c.code === currency)?.flag}
         </span>
-        <span className="text-sm font-medium">{currency}</span>
+        <span className="text-xs font-medium">{currency}</span>
         <ChevronUp
           className={`h-4 w-4 transition ${open ? "rotate-180" : ""}`}
         />
