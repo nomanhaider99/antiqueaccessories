@@ -115,6 +115,15 @@ export default function Orders() {
     });
   };
 
+  function formatCountryLabel(value: string): string {
+    return value
+      .toLowerCase()
+      .trim()
+      .split(/\s+/)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+
 
   return (
     <div className="rounded-xl border bg-white">
@@ -193,7 +202,7 @@ export default function Orders() {
                   </div>
                 )}
                 <div className="font-medium text-wrap">{order.address}</div>
-                <div className="text-sm text-muted-foreground">{order.city}, {order.country}</div>
+                <div className="text-sm text-muted-foreground">{formatCountryLabel(order.city)}, {formatCountryLabel(order.country)}</div>
               </TableCell>
 
               {/* Order ID */}

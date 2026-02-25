@@ -8,7 +8,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import Image from "next/image"; 
+import Image from "next/image";
 import { useCurrency } from "@/store/currency-store";
 
 interface OrderDetailsSheetProps {
@@ -38,6 +38,7 @@ interface OrderDetails {
   customer_name: string;
   phone: string;
   city: string;
+  country: string;
   house_number?: string | null;
   street_number?: string | null;
   address: string;
@@ -82,6 +83,15 @@ export default function OrderDetails({
 
     fetchOrder();
   }, [orderId, open]);
+
+  function formatCountryLabel(value: string): string {
+    return value
+      .toLowerCase()
+      .trim()
+      .split(/\s+/)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -150,7 +160,7 @@ export default function OrderDetails({
               <DetailRow label="Delivery Services" value={order.shipping_mode.charAt(0).toUpperCase() + order.shipping_mode.slice(1)} />
               <DetailRow label="Payment method" value={order.payment_mode === 'advance' ? 'Advance' : 'Cash on Delivery'} />
               <DetailRow label="Status" value={<span className="capitalize">{order.status}</span>} />
-            </div>  
+            </div>
 
             <Separator />
 
@@ -160,7 +170,7 @@ export default function OrderDetails({
               <DetailRow label="Phone" value={order.phone} />
               <DetailRow
                 label="Address"
-                value={`${order.house_number ? `House No.  ${order.house_number},` : ''} ${order.street_number ? `Street No. ${order.street_number},` : ''} ${order.address}, ${order.city}`}
+                value={`${order.house_number ? `House No.  ${order.house_number},` : ''} ${order.street_number ? `Street No. ${order.street_number},` : ''} ${order.address}, ${order.city}, ${formatCountryLabel(order.country)}`}
               />
             </div>
 

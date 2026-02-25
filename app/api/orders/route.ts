@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { orderItems, orders, products } from "@/db/schema";
 import { eq, ilike, or, desc, inArray, and } from "drizzle-orm";
 import { randomUUID } from "crypto";
+import { SHIPPING_RATES } from "@/lib/shipping_rate";
 
 export async function GET(request: NextRequest) {
   try {
@@ -38,6 +39,13 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function normalizeCountry(input?: string) {
+  return (input || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
 }
 
 export async function POST(request: Request) {
@@ -90,8 +98,23 @@ export async function POST(request: Request) {
       };
     });
 
+    const normalizedCountry = normalizeCountry(country);
 
-    const shipping_fee = shipping_mode === "express" ? 350 : 350;
+    const baseShipping =
+      SHIPPING_RATES[normalizedCountry as keyof typeof SHIPPING_RATES];
+
+    if (!baseShipping) {
+      return NextResponse.json(
+        { message: "Shipping not available for this country" },
+        { status: 400 }
+      );
+    }
+
+    const shipping_fee =
+      shipping_mode === "express"
+        ? 0
+        : baseShipping;
+
     const total = subtotal + shipping_fee;
 
     const orderId = randomUUID();
@@ -119,7 +142,7 @@ export async function POST(request: Request) {
         calculatedItems.map((item: any) => ({
           order_id: orderId,
           product_id: item.product_id,
-          size: item.size,          
+          size: item.size,
           quantity: item.quantity,
           price: item.price,
         }))

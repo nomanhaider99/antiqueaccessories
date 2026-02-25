@@ -15,6 +15,7 @@ type Order = {
   customer_name: string;
   phone: string;
   city: string;
+  country: string;
   house_number?: string | null;
   street_number?: string | null;
   address: string;
@@ -54,6 +55,15 @@ const statusLabel: Record<OrderStatus, string> = {
   rejected: "Rejected",
 };
 
+function formatCountryLabel(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()
+    .split(/\s+/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export default function OrderDetails({ order, items }: Props) {
   const { currency, rate } = useCurrency();
 
@@ -63,10 +73,10 @@ export default function OrderDetails({ order, items }: Props) {
   return (
     <div className="max-w-4xl mx-auto bg-white p-4 md:p-10 rounded-2xl md:shadow">
       <div className="flex justify-center mb-2">
-  <p className="text-xs md:text-sm text-gray-500 py-1 px-4 border rounded-md border-zinc-600/75">
-    Refresh this page to see the latest updates for your order.
-  </p>
-</div>
+        <p className="text-xs md:text-sm text-gray-500 py-1 px-4 border rounded-md border-zinc-600/75">
+          Refresh this page to see the latest updates for your order.
+        </p>
+      </div>
 
       <h1 className="text-xl md:text-2xl font-semibold text-center mb-4">
         Thank you for your order!
@@ -114,7 +124,7 @@ export default function OrderDetails({ order, items }: Props) {
           <p className="font-medium text-gray-900 leading-relaxed">
             {order.house_number && `House ${order.house_number}, `}
             {order.street_number && `Street ${order.street_number}, `}
-            {order.address}, {order.city}
+            {order.address}, {order.city}, {formatCountryLabel(order.country)}
           </p>
         </div>
       </div>

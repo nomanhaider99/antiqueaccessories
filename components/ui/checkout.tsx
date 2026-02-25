@@ -16,10 +16,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-import { getCart, CartItem } from "@/lib/cart";
 import { useCurrency } from "@/store/currency-store";
 import { useCart } from "@/lib/cart-context";
+import { SHIPPING_RATES } from "@/lib/shipping_rate";
 
 const cities = [
   "Karachi",
@@ -32,6 +31,10 @@ const cities = [
   "Quetta",
 ];
 
+function formatCountryLabel(value: string) {
+  return value.replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 export default function Checkout() {
   const { cart: cartItems, refresh } = useCart(); // reactive cart
   const { currency, rate } = useCurrency();
@@ -42,7 +45,7 @@ export default function Checkout() {
   const [form, setForm] = useState({
     customer_name: "",
     city: "",
-    country: "",
+    country: "pakistan",
     custom_city: "",
     house_number: "",
     street_number: "",
@@ -60,11 +63,18 @@ export default function Checkout() {
   }, [finalCity, paymentMethod]);
 
   const subtotal = cartItems.reduce((s, i) => s + i.price * i.quantity, 0);
-  const shippingFee = 350;
+
+  const shippingFee =
+    form.country ? SHIPPING_RATES[form.country as keyof typeof SHIPPING_RATES] : 0;
+
   const total = subtotal + shippingFee;
+
   const convertedSubtotal = subtotal * rate;
   const convertedShipping = shippingFee * rate;
   const convertedTotal = total * rate;
+  const estimatedShipping =
+    form.country ? SHIPPING_RATES[form.country as keyof typeof SHIPPING_RATES] : 0;
+
   const formatPrice = (value: number) => `${currency} ${value.toFixed(2)}`;
 
   const placeOrder = async () => {
@@ -143,14 +153,22 @@ export default function Checkout() {
 
             <div>
               <Label>Country</Label>
-              <Input
-                className="rounded-none"
+              <Select
                 value={form.country}
-                onChange={(e) =>
-                  setForm({ ...form, country: e.target.value })
-                }
-                placeholder="Enter your country"
-              />
+                onValueChange={(value) => setForm({ ...form, country: value as any })}
+              >
+                <SelectTrigger className="rounded-none text-sm w-full">
+                  <SelectValue placeholder="Select country" />
+                </SelectTrigger>
+
+                <SelectContent className="w-full">
+                  {Object.keys(SHIPPING_RATES).map((country) => (
+                    <SelectItem key={country} value={country}>
+                      {formatCountryLabel(country)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
@@ -327,6 +345,7 @@ export default function Checkout() {
               />
               <div className="flex-1">
                 <p>{item.title}</p>
+                <p className="text-sm">Qty: {item.quantity}</p>
               </div>
               <p>{formatPrice(item.price * item.quantity * rate)}</p>
             </div>

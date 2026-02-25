@@ -19,6 +19,7 @@ export default async function ProductPage({
             id: orders.id,
             customer_name: orders.customer_name,
             city: orders.city,
+            country: orders.country,
             house_number: orders.house_number,
             street_number: orders.street_number,
             address: orders.address,
