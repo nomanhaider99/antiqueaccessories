@@ -305,7 +305,7 @@ export default function Checkout() {
                   Please transfer the amount and send screenshot to WhatsApp:
                 </p>
                 <p className="text-blue-600 font-semibold">
-                  +92 330 4765054
+                  +92 312 2745789
                 </p>
               </div>
             )}
